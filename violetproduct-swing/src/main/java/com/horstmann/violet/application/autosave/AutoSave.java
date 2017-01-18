@@ -62,9 +62,9 @@ public class AutoSave implements ActionListener {
 
 		final JFrame autosaveFrame = new JFrame("Autosave recover");
 		autosaveFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		//Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		//autosaveFrame.setSize(500, 300);
-		//autosaveFrame.setLocation(dim.width / 2 - autosaveFrame.getSize().width / 2, dim.height / 2 - autosaveFrame.getSize().height / 2);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		autosaveFrame.setSize(500, 300);
+		autosaveFrame.setLocation(dim.width / 2 - autosaveFrame.getSize().width / 2, dim.height / 2 - autosaveFrame.getSize().height / 2);
 
 		JPanel jPanel = new JPanel();
 		jPanel.setLayout(new GridBagLayout());
