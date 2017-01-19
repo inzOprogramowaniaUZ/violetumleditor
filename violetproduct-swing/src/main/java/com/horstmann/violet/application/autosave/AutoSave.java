@@ -53,7 +53,7 @@ public class AutoSave implements ActionListener {
 		if (mainFrame != null) {
 			this.mainFrame = mainFrame;
 			if (createVioletDirectory()) {
-				openAutoSaveProjects();
+				openAutoSaveDirectory();
 				initializeTimer();
 			}
 		}
@@ -61,23 +61,36 @@ public class AutoSave implements ActionListener {
 
 	private boolean createVioletDirectory() {
 		File directory = new File(autoSaveDirectory);
-		if (directory.isDirectory()) {
-			return true;
-		} else {
-			return directory.mkdir();
-		}
+		return directory.isDirectory() || directory.mkdir();
+
+
 	}
 
-	private void openAutoSaveProjects() {
+	private void openAutoSaveDirectory() {
 		File directory = new File(autoSaveDirectory);
+		emptyFileRemove();
 		if (directory.isDirectory()) {
 			File[] files = directory.listFiles();
 			if (files.length == 0)
 				return;
+
 			createSaveRecoverFrame();
 
 		}
 	}
+
+	private void emptyFileRemove() {
+		File directory = new File(autoSaveDirectory);
+
+		File[] files = directory.listFiles();
+
+		for (File file : files) {
+			if (file.length() == 0)
+				file.delete();
+
+		}
+	}
+
 
 	private void initializeTimer() {
 		saveTimer = new Timer(saveInterval, (ActionListener) this);
@@ -128,6 +141,7 @@ public class AutoSave implements ActionListener {
 		autoSaveFrame.setVisible(true);
 	}
 
+
 	private void loadAutoSaveFile() {
 		File directory = new File(autoSaveDirectory);
 
@@ -135,24 +149,22 @@ public class AutoSave implements ActionListener {
 
 			for (File file : files) {
 
-				if (file.length()==0)
-						file.delete();
+
 				try {
 
 					IFile autoSaveFile = new LocalFile(file);
 					IFileReader readFile = new JFileReader(file);
 					InputStream in = readFile.getInputStream();
-					System.out.print(file.length());
 
-					IGraphFile graphFile = new GraphFile(autoSaveFile);
+					if (in != null) {
+						IGraphFile graphFile = new GraphFile(autoSaveFile);
 
-					IWorkspace workspace = new Workspace(graphFile);
+						IWorkspace workspace = new Workspace(graphFile);
 
-					mainFrame.addWorkspace(workspace);
+						mainFrame.addWorkspace(workspace);
 
-
-					in.close();
-
+						in.close();
+					}
 
 
 				} catch (IOException e) {
