@@ -15,8 +15,11 @@ import com.horstmann.violet.framework.file.IFile;
 import com.horstmann.violet.framework.file.LocalFile;
 import com.horstmann.violet.framework.file.persistence.IFileReader;
 import com.horstmann.violet.framework.file.persistence.JFileReader;
+import com.horstmann.violet.framework.injection.bean.ManiocFramework;
 import com.horstmann.violet.framework.injection.bean.ManiocFramework.BeanInjector;
 import com.horstmann.violet.framework.file.IGraphFile;
+import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
+import com.horstmann.violet.framework.injection.resources.annotation.ResourceBundleBean;
 import com.horstmann.violet.workspace.IWorkspace;
 import com.horstmann.violet.workspace.Workspace;
 
@@ -27,6 +30,15 @@ import com.horstmann.violet.workspace.Workspace;
  */
 
 public class AutoSave implements ActionListener {
+
+	@ResourceBundleBean(key="dialog.autosave.title")
+	private String dialogTitle;
+
+	@ResourceBundleBean(key = "dialog.autosave.recover")
+	private String buttonRecovery;
+
+	@ResourceBundleBean(key = "dialog.autosave.startnew")
+	private String buttonNew;
 
 	private MainFrame mainFrame;
 	private Timer saveTimer;
@@ -56,97 +68,13 @@ public class AutoSave implements ActionListener {
 		}
 	}
 
-
-	private void createSaverecoverDialog() {
-
-
-		final JFrame autosaveFrame = new JFrame("Autosave recover");
-		autosaveFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		autosaveFrame.setSize(500, 300);
-		autosaveFrame.setLocation(dim.width / 2 - autosaveFrame.getSize().width / 2, dim.height / 2 - autosaveFrame.getSize().height / 2);
-
-		JPanel jPanel = new JPanel();
-		jPanel.setLayout(new GridBagLayout());
-		autosaveFrame.add(jPanel);
-		String name = "Przywróć nie zapisany proejkt";
-		String name2 = "Rozpocznij nowy projekt";
-		JButton LoadAutoBtn = new JButton(name);
-		LoadAutoBtn.setSize(100, 50);
-		LoadAutoBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event)
-
-
-			{
-
-				Loadsavetoworkscpae();
-
-				autosaveFrame.dispose();
-			}
-		});
-		JButton StartNewBtn = new JButton(name2);
-		LoadAutoBtn.setSize(100, 50);
-		StartNewBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-
-			removeautosavefile();
-					autosaveFrame.dispose();
-
-			}
-		});
-		jPanel.add(LoadAutoBtn);
-		jPanel.add(StartNewBtn);
-		autosaveFrame.setResizable(false);
-		autosaveFrame.setAlwaysOnTop(true);
-		autosaveFrame.setVisible(true);
-	}
-
-	private void Loadsavetoworkscpae()
-	{
-		File directory = new File(autoSaveDirectory);
-		File[] files = directory.listFiles();
-		for (File file : files) {
-
-			try {
-
-				IFile autoSaveFile = new LocalFile(file);
-				IFileReader readFile = new JFileReader(file);
-				InputStream in = readFile.getInputStream();
-				if (in != null) {
-					// IGraph graph = this.filePersistenceService.read(in);
-					IGraphFile graphFile = new GraphFile(autoSaveFile);
-
-					IWorkspace workspace = new Workspace(graphFile);
-
-					mainFrame.addWorkspace(workspace);
-
-					in.close();
-
-				}
-			} catch (IOException e) {
-				file.delete();
-			} catch (Exception e) {
-				file.delete();
-			}
-		}
-	}
-	private void removeautosavefile()
-	{
-		File directory = new File(autoSaveDirectory);
-		File[] files = directory.listFiles();
-		for (File file : files) {
-
-
-			file.delete();
-		}
-	}
 	private void openAutoSaveProjects() {
 		File directory = new File(autoSaveDirectory);
 		if (directory.isDirectory()) {
 			File[] files = directory.listFiles();
 			if (files.length == 0)
 				return;
-			createSaverecoverDialog();
+			createSaveRecoverFrame();
 
 		}
 	}
@@ -155,6 +83,95 @@ public class AutoSave implements ActionListener {
 		saveTimer = new Timer(saveInterval, (ActionListener) this);
 		saveTimer.setInitialDelay(0);
 		saveTimer.start();
+	}
+
+
+	private void createSaveRecoverFrame() {
+
+		ResourceBundleInjector.getInjector().inject(this);
+		ManiocFramework.BeanInjector.getInjector().inject(this);
+		final JFrame autoSaveFrame = new JFrame(dialogTitle);
+		autoSaveFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		autoSaveFrame.setSize(500, 300);
+		autoSaveFrame.setLocation(dim.width / 2 - autoSaveFrame.getSize().width / 2, dim.height / 2 - autoSaveFrame.getSize().height / 2);
+
+		JPanel jPanel = new JPanel();
+		jPanel.setLayout(new GridBagLayout());
+		autoSaveFrame.add(jPanel);
+
+		JButton LoadAutoBtn = new JButton(buttonRecovery);
+		LoadAutoBtn.setSize(100, 50);
+		LoadAutoBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event)
+			{
+
+				loadAutoSaveFile();
+
+				autoSaveFrame.dispose();
+			}
+		});
+		JButton StartNewBtn = new JButton(buttonNew);
+		LoadAutoBtn.setSize(100, 50);
+		StartNewBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+
+			removeAutoSaveFile();
+					autoSaveFrame.dispose();
+
+			}
+		});
+		jPanel.add(LoadAutoBtn);
+		jPanel.add(StartNewBtn);
+		autoSaveFrame.setResizable(false);
+		autoSaveFrame.setAlwaysOnTop(true);
+		autoSaveFrame.setVisible(true);
+	}
+
+	private void loadAutoSaveFile() {
+		File directory = new File(autoSaveDirectory);
+
+			File[] files = directory.listFiles();
+
+			for (File file : files) {
+
+				if (file.length()==0)
+						file.delete();
+				try {
+
+					IFile autoSaveFile = new LocalFile(file);
+					IFileReader readFile = new JFileReader(file);
+					InputStream in = readFile.getInputStream();
+					System.out.print(file.length());
+
+					IGraphFile graphFile = new GraphFile(autoSaveFile);
+
+					IWorkspace workspace = new Workspace(graphFile);
+
+					mainFrame.addWorkspace(workspace);
+
+
+					in.close();
+
+
+
+				} catch (IOException e) {
+					file.delete();
+
+				} catch (Exception e) {
+					file.delete();
+
+			}
+		}
+	}
+	private void removeAutoSaveFile()
+	{
+		File directory = new File(autoSaveDirectory);
+		File[] files = directory.listFiles();
+		for (File file : files) {
+
+			file.delete();
+		}
 	}
 
 	@Override
