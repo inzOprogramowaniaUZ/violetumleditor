@@ -86,7 +86,7 @@ public class AutoSave implements ActionListener {
 				return;
 
 			createSaveRecoverFrame();
-			AutoSaveRecover aa= new AutoSaveRecover(mainFrame);// not work yet
+		//	AutoSaveRecover aa= new AutoSaveRecover(mainFrame);// not work yet
 
 		}
 	}
