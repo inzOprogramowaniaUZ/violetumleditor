@@ -28,6 +28,7 @@ import java.io.InputStream;
 
 public class AutoSaveRecover extends JFrame {
 
+    public static boolean isLoad =false;
     private MainFrame mainFrame;
     AutoSave autoSave = new AutoSave(mainFrame);
 
@@ -135,6 +136,7 @@ public class AutoSaveRecover extends JFrame {
                     mainFrame.addWorkspace(workspace);
 
                     in.close();
+                    isLoad=true;
                 }
 
 

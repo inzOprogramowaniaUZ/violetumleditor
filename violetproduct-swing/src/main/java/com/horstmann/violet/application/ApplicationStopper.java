@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import com.horstmann.violet.application.autosave.AutoSaveRecover;
 import com.horstmann.violet.application.gui.MainFrame;
 import com.horstmann.violet.framework.dialog.DialogFactory;
 import com.horstmann.violet.framework.file.IGraphFile;
@@ -61,6 +62,11 @@ public class ApplicationStopper
         }
         int unsavedCount = dirtyWorkspaceList.size();
         IWorkspace activeWorkspace = mainFrame.getActiveWorkspace();
+
+        if (AutoSaveRecover.isLoad==true)
+        {
+            unsavedCount++;
+        }
         if (unsavedCount > 0)
         {
             // ask user if it is ok to close
