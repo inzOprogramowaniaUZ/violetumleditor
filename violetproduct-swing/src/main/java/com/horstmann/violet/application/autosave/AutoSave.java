@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.*;
+
 import com.horstmann.violet.application.gui.MainFrame;
 import com.horstmann.violet.framework.injection.bean.ManiocFramework.BeanInjector;
 import com.horstmann.violet.framework.file.IGraphFile;
@@ -23,7 +24,7 @@ public class AutoSave implements ActionListener {
     private final String autoSaveDirectory = System.getProperty("user.home") + File.separator + "VioletUML";
 
     /**
-     * Constructor Autosave
+     * Constructor AutoSave
      *
      * @param mainFrame where is attached this menu
      */
@@ -54,7 +55,7 @@ public class AutoSave implements ActionListener {
     }
 
     /**
-     * Get autosave file in direcotry, if exist initialize recovery frame
+     * Get autosave file in directory, if exist initialize AutoSaveRecover frame
      */
     private void openAutoSaveDirectory() {
         File directory = new File(autoSaveDirectory);
@@ -86,7 +87,7 @@ public class AutoSave implements ActionListener {
     }
 
     /**
-     * Initialize timer
+     * Initialize Timer
      */
     private void initializeTimer() {
         saveTimer = new Timer(saveInterval, (ActionListener) this);
@@ -97,10 +98,10 @@ public class AutoSave implements ActionListener {
     /**
      * Action Performed
      *
-     * @param e event
+     * @param actionEvent event
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent actionEvent) {
         for (IWorkspace workspace : mainFrame.getWorkspaceList()) {
             IGraphFile graphFile = workspace.getGraphFile();
             if (graphFile.isSaveRequired()) {
