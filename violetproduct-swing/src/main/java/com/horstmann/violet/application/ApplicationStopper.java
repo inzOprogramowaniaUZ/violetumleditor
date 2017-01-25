@@ -54,16 +54,13 @@ public class ApplicationStopper
         List<IWorkspace> workspaceList = mainFrame.getWorkspaceList();
         for (IWorkspace workspace: workspaceList)
         {
-            IGraphFile graphFile = workspace.getGraphFile();
-        	if (graphFile.isSaveRequired())
-            {
-                dirtyWorkspaceList.add(workspace);
-            }
+            dirtyWorkspaceList.add(workspace);
+
         }
         int unsavedCount = dirtyWorkspaceList.size();
         IWorkspace activeWorkspace = mainFrame.getActiveWorkspace();
 
-        if (AutoSaveRecover.isLoad==true)
+        if (AutoSaveRecover.isAutoSaveFileLoad ==true)
         {
             unsavedCount++;
         }

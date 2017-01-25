@@ -28,12 +28,12 @@ import java.io.InputStream;
 
 public class AutoSaveRecover extends JFrame {
 
-    public static boolean isLoad =false;
+    public static boolean isAutoSaveFileLoad = false;
     private MainFrame mainFrame;
-    AutoSave autoSave = new AutoSave(mainFrame);
+    private AutoSave autoSave = new AutoSave(mainFrame);
 
     @ResourceBundleBean(key = "dialog.autosave.title")
-    private String dialogTitle;
+    private String saveRecoverFrameTitle;
 
     @ResourceBundleBean(key = "dialog.autosave.recover")
     private String buttonRecovery;
@@ -50,9 +50,8 @@ public class AutoSaveRecover extends JFrame {
 
         ResourceBundleInjector.getInjector().inject(this);
         ManiocFramework.BeanInjector.getInjector().inject(this);
-        this.setTitle(this.dialogTitle);
+        this.setTitle(this.saveRecoverFrameTitle);
         this.setLocationRelativeTo(null);
-        //this.setModal(true);
         this.setAlwaysOnTop(true);
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -96,17 +95,17 @@ public class AutoSaveRecover extends JFrame {
     }
 
     /**
-     * Set Jframe postion
+     * Set JFrame position
      *
-     * @param parent JFrame
+     * @param jFrame JFrame
      */
-    private void setLocation(JFrame parent) {
+    private void setLocation(JFrame jFrame) {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
         int w = this.getSize().width;
         int h = this.getSize().height;
-        int x = (dimension.width-w)/2;
-        int y = (dimension.height-h)/2;
+        int x = (dimension.width - w) / 2;
+        int y = (dimension.height - h) / 2;
 
         this.setLocation(x, y);
     }
@@ -136,7 +135,7 @@ public class AutoSaveRecover extends JFrame {
                     mainFrame.addWorkspace(workspace);
 
                     in.close();
-                    isLoad=true;
+                    isAutoSaveFileLoad = true;
                 }
 
 
