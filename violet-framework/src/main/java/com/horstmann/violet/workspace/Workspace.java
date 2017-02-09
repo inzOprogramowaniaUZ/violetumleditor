@@ -70,7 +70,7 @@ public class Workspace implements IWorkspace
      * Constructs a diagram panel with the specified graph and a specified id
      *
      * @param graphFile
-     * @param id        unique id
+     * @param id unique id
      */
     public Workspace(final IGraphFile graphFile, final Id id)
     {
@@ -173,6 +173,7 @@ public class Workspace implements IWorkspace
         behaviorManager.addBehavior(new CutCopyPasteBehavior(this.graphEditor));
         behaviorManager.addBehavior(new SwingRepaintingBehavior(this.graphEditor));
         behaviorManager.addBehavior(new ColorizeBehavior(this, colorChoiceBar));
+        behaviorManager.addBehavior(new FindBehavior(this.graphEditor));
     }
 
     @Override
@@ -341,7 +342,6 @@ public class Workspace implements IWorkspace
     @Override
     public void setAWTComponent(final WorkspacePanel workspacePanel)
     {
-
         this.workspacePanel = workspacePanel;
     }
 
