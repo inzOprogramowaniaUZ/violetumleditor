@@ -5,7 +5,7 @@ import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
-import com.horstmann.violet.product.diagram.common.node.ColorableNode;
+import com.horstmann.violet.product.diagram.common.node.ColorableNodeWithMethodsInfo;
 import com.horstmann.violet.product.diagram.common.node.PointNode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;
@@ -19,7 +19,7 @@ import java.awt.geom.Point2D;
 /**
  * An interface node in a class diagram.
  */
-public class InterfaceNode extends ColorableNode implements INamedNode
+public class InterfaceNode extends ColorableNodeWithMethodsInfo implements INamedNode
 {
     /**
      * Construct an interface node with a default size and the text <<interface>>.
@@ -119,55 +119,10 @@ public class InterfaceNode extends ColorableNode implements INamedNode
         return false;
     }
 
-    /**
-     * Sets the name property value.
-     * 
-     * @param newValue the interface name
-     */
-    public void setName(LineText newValue)
-    {
-        name.setText(newValue);
-    }
-
-    /**
-     * Gets the name property value.
-     * 
-     * @return the interface name
-     */
-    public LineText getName()
-    {
-        return name;
-    }
-
     @Override
     public LineText getAttributes() {
         return null;
     }
-
-    /**
-     * Sets the methods property value.
-     * 
-     * @param newValue the methods of this interface
-     */
-    public void setMethods(LineText newValue)
-    {
-        methods.setText(newValue);
-    }
-
-    /**
-     * Gets the methods property value.
-     * 
-     * @return the methods of this interface
-     */
-    public LineText getMethods()
-    {
-        return methods;
-    }
-
-
-
-    private SingleLineText name;
-    private MultiLineText methods;
 
     private transient Separator separator = null;
 
