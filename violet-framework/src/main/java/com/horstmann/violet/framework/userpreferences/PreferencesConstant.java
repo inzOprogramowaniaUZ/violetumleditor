@@ -107,7 +107,7 @@ public class PreferencesConstant
      */
     public static final PreferencesConstant LANGUAGE = new PreferencesConstant("language");
 
-        /**
+     /**
      * Preference constants list
      */
     public static final PreferencesConstant[] LIST;
