@@ -40,37 +40,41 @@ import com.horstmann.violet.framework.userpreferences.UserPreferencesService;
  * Represents the setting menu on the editor frame
  */
 @ResourceBundleBean(resourceReference = MenuFactory.class)
-public class SettingMenu extends JMenu {
+public class SettingMenu extends JMenu
+{
 
     @ResourceBundleBean(key = "setting")
-    public SettingMenu(final MainFrame mainFrame) {
+    public SettingMenu(final MainFrame mainFrame)
+    {
         BeanInjector.getInjector().inject(this);
         ResourceBundleInjector.getInjector().inject(this);
         this.mainFrame = mainFrame;
         this.createMenu();
-
     }
 
     /**
      * Initialize the menu
      */
-    private void createMenu() {
-
+    private void createMenu()
+    {
         ButtonGroup group = new ButtonGroup();
         settingItemMenuLanguage.setIcon(languageIcon);
-        for (final Language language : languageManager.getLanguages()) {
+        for (final Language language : languageManager.getLanguages())
+        {
             JCheckBoxMenuItem menuLangSelect = new JCheckBoxMenuItem(language.getName());
             group.add(menuLangSelect);
 
-            if (language.getShortcut().equals(Locale.getDefault().toString())) {
-
+            if (language.getShortcut().equals(Locale.getDefault().toString()))
+            {
                 menuLangSelect.setSelected(true);
             }
 
             settingItemMenuLanguage.add(menuLangSelect);
-            menuLangSelect.addActionListener(new ActionListener() {
+            menuLangSelect.addActionListener(new ActionListener()
+                                             {
                                                  @Override
-                                                 public void actionPerformed(ActionEvent e) {
+                                                 public void actionPerformed(ActionEvent e)
+                                                 {
                                                      changeLanguage(language.getShortcut());
                                                  }
                                              }
@@ -81,7 +85,8 @@ public class SettingMenu extends JMenu {
         this.add(settingItemMenuLanguage);
     }
 
-    private void changeLanguage(String languageName) {
+    private void changeLanguage(String languageName)
+    {
         languageChangeAlert();
         languageManager.setPreferedLanguage(languageName);
     }
@@ -89,15 +94,11 @@ public class SettingMenu extends JMenu {
     /**
      * Initialize alert
      */
-    private void languageChangeAlert() {
-
+    private void languageChangeAlert()
+    {
         Object[] options = {"OK"};
-
         JOptionPane.showOptionDialog(null, changeLanguageDialogMessage, changeLanguageDialogTitle,
-
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-
-                null, options, options[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
     }
 
     /**
