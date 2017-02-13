@@ -17,7 +17,7 @@ import com.horstmann.violet.framework.injection.bean.ManiocFramework.BeanInjecto
 public class LanguageManager {
 
     private List<Language> languages = new ArrayList<Language>();
-
+    private static final String resourceDir = "com/horstmann/violet/framework/language/";
     /**
      * Default constructor
      */
@@ -62,7 +62,7 @@ public class LanguageManager {
         for (String countryCode : languages) {
 
             String path = "Language_" + countryCode + ".properties";
-            URL file = ClassLoader.getSystemResource("com/horstmann/violet/framework/language/" + path);
+            URL file = ClassLoader.getSystemResource(resourceDir + path);
 
             if (file != null) {
 
