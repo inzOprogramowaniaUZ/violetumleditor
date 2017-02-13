@@ -103,8 +103,8 @@ public class PreferencesConstant
             "network.guestconfig.http.serverurl");
 
     /**
-     +     * Key to store prefered language
-     +     */
+     * Key to store prefered language
+     */
     public static final PreferencesConstant LANGUAGE = new PreferencesConstant("language");
 
         /**
