@@ -42,11 +42,6 @@ import com.horstmann.violet.framework.userpreferences.UserPreferencesService;
 @ResourceBundleBean(resourceReference = MenuFactory.class)
 public class SettingMenu extends JMenu {
 
-    /**
-     * Default constructor
-     *
-     * @param mainFrame
-     */
     @ResourceBundleBean(key = "setting")
     public SettingMenu(final MainFrame mainFrame) {
         BeanInjector.getInjector().inject(this);
@@ -86,9 +81,6 @@ public class SettingMenu extends JMenu {
         this.add(settingItemMenuLanguage);
     }
 
-    /**
-     * Change language
-     */
     private void changeLanguage(String languageName) {
         languageChangeAlert();
         languageManager.setPreferedLanguage(languageName);
@@ -113,9 +105,6 @@ public class SettingMenu extends JMenu {
      */
     private MainFrame mainFrame;
 
-    /**
-     * Initialize LanguageManager
-     */
     LanguageManager languageManager = new LanguageManager();
 
     @InjectedBean
