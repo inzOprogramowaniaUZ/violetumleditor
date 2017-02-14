@@ -62,7 +62,7 @@ public class IconButtonUI extends BasicButtonUI
         b.setPreferredSize(new Dimension(40 , 30));
         b.setBorderPainted(false);
         b.setRolloverEnabled(true);
-        b.setBorder(new BevelBorder(0)); // 5? -> co to robi?
+        b.setBorder(new BevelBorder(0));
         prepareIcons(b);
     }
     
