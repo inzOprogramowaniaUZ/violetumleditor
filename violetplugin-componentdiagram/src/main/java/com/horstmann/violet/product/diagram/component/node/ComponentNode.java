@@ -49,14 +49,15 @@ public class ComponentNode extends ColorableNode
     {
         tooltip = ComponentDiagramConstant.COMPONENT_DIAGRAM_RESOURCE.getString("tooltip.component_node");
         text = new SingleLineText();
-        text.setPadding(1,50,1,10);
+        text.setPadding(TOP_AND_BOTTOM_TEXT_PADDING,
+                        LEFT_TEXT_PADDING,
+                        TOP_AND_BOTTOM_TEXT_PADDING,
+                        RIGHT_TEXT_PADDING);
         createContentStructure();
     }
 
     /**
      * Construct a component node by cloning it.
-     * @param node
-     * @throws CloneNotSupportedException
      */
     protected ComponentNode(ComponentNode node) throws CloneNotSupportedException
     {
@@ -86,8 +87,6 @@ public class ComponentNode extends ColorableNode
 
     /**
      * Copy the node.
-     * @return
-     * @throws CloneNotSupportedException
      */
     @Override
     protected ComponentNode copy() throws CloneNotSupportedException
@@ -159,7 +158,6 @@ public class ComponentNode extends ColorableNode
 
     /**
      * Sets the node text color.
-     * @param textColor
      */
     @Override
     public void setTextColor(Color textColor)
@@ -168,10 +166,6 @@ public class ComponentNode extends ColorableNode
         super.setTextColor(textColor);
     }
 
-    /**
-     *
-     * @return Tooltip string.
-     */
     @Override
     public String getToolTip()
     {
@@ -198,8 +192,6 @@ public class ComponentNode extends ColorableNode
 
     /**
      * Gets connection point.
-     * @param edge
-     * @return
      */
     @Override
     public Point2D getConnectionPoint(IEdge edge)
@@ -221,7 +213,6 @@ public class ComponentNode extends ColorableNode
 
     /**
      * Adds connection edge.
-     * @param edge
      */
     @Override
     public boolean addConnection(IEdge edge)
@@ -235,8 +226,6 @@ public class ComponentNode extends ColorableNode
 
     /**
      * Sets the text property value.
-     *
-     * @param newValue the new text description
      */
     public void setText(LineText newValue)
     {
@@ -261,7 +250,7 @@ public class ComponentNode extends ColorableNode
     private static final int TOP_ARM_HEIGHT = MIN_HEIGHT*3/7;
     private static final int BOTTOM_ARM_HEIGHT = MIN_HEIGHT*4/7;
     private static final int BOTTOM_NOTCH_HEIGHT = MIN_HEIGHT*5/7;
-    private static final int LEFT_TEXT_PADDING = 25;
+    private static final int LEFT_TEXT_PADDING = 50;
     private static final int RIGHT_TEXT_PADDING = 10;
     private static final int TOP_AND_BOTTOM_TEXT_PADDING = 1;
 }

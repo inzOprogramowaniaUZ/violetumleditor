@@ -41,11 +41,13 @@ import java.util.List;
  * A UML component diagram.
  */
 public class ComponentDiagramGraph extends AbstractGraph {
-    public List<INode> getNodePrototypes() {
+    public List<INode> getNodePrototypes()
+    {
         return NODE_PROTOTYPES;
     }
 
-    public List<IEdge> getEdgePrototypes() {
+    public List<IEdge> getEdgePrototypes()
+    {
         return EDGE_PROTOTYPES;
     }
 
