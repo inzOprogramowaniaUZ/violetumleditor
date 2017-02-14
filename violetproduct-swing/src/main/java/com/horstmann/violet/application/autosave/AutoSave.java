@@ -3,10 +3,14 @@ package com.horstmann.violet.application.autosave;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.*;
 
 import com.horstmann.violet.application.gui.MainFrame;
 import com.horstmann.violet.framework.injection.bean.ManiocFramework.BeanInjector;
+
+
+import javax.swing.Timer;
+
+
 import com.horstmann.violet.framework.file.IGraphFile;
 import com.horstmann.violet.workspace.IWorkspace;
 
@@ -17,11 +21,11 @@ import com.horstmann.violet.workspace.IWorkspace;
  */
 public class AutoSave implements ActionListener {
 
-    private MainFrame mainFrame;
-    private Timer saveTimer;
-    private final int second = 100;
-    private final int saveInterval = 60 * second;
-    private final String autoSaveDirectory = System.getProperty("user.home") + File.separator + "VioletUML";
+	private MainFrame mainFrame;
+	private Timer saveTimer;
+	private int saveInterval;
+	private boolean autoSaveEnabled;
+	private String autoSaveDirectory;
 
     /**
      * Constructor AutoSave
@@ -29,17 +33,24 @@ public class AutoSave implements ActionListener {
      * @param mainFrame where is attached this menu
      */
     public AutoSave(MainFrame mainFrame) {
-        BeanInjector.getInjector().inject(this);
+		BeanInjector.getInjector().inject(this);
+		AutosaveSettings settings = new AutosaveSettings();
 
-        if (mainFrame != null) {
-            this.mainFrame = mainFrame;
-            if (createVioletDirectory()) {
-                openAutoSaveDirectory();
-                initializeTimer();
-            }
-        }
-    }
 
+		if (settings.isEnableAutosave()) {
+			saveInterval = settings.getAutosaveInterval();
+			autoSaveDirectory = settings.getAutosavePath();
+			autoSaveEnabled = settings.isEnableAutosave();
+
+			if (mainFrame != null) {
+				this.mainFrame = mainFrame;
+				if (createVioletDirectory()) {
+					openAutoSaveDirectory();
+					initializeTimer();
+				}
+			}
+		}
+	}
     public String getAutoSaveDirectory() {
         return autoSaveDirectory;
     }
@@ -105,9 +116,12 @@ public class AutoSave implements ActionListener {
         for (IWorkspace workspace : mainFrame.getWorkspaceList()) {
             IGraphFile graphFile = workspace.getGraphFile();
             if (graphFile.isSaveRequired()) {
-                graphFile.autoSave();
+                graphFile.autoSave(autoSaveDirectory);
             }
         }
     }
 
 }
+
+
+

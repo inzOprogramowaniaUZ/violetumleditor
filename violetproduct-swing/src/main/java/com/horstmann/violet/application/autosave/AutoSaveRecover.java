@@ -135,6 +135,7 @@ public class AutoSaveRecover extends JFrame {
                     mainFrame.addWorkspace(workspace);
 
                     in.close();
+                    file.delete();
                     isAutoSaveFileLoad = true;
                 }
 
