@@ -22,11 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by Marcin on 19.01.2017.
- */
-
-public class AutoSaveRecover extends JFrame {
+public class AutoSaveRecover extends JFrame
+{
 
     public static boolean isAutoSaveFileLoad = false;
     private MainFrame mainFrame;
@@ -44,7 +41,8 @@ public class AutoSaveRecover extends JFrame {
     /**
      * Open autosave frame
      */
-    public AutoSaveRecover(MainFrame mainFrame) {
+    public AutoSaveRecover(MainFrame mainFrame)
+    {
 
         this.mainFrame = mainFrame;
 
@@ -64,8 +62,8 @@ public class AutoSaveRecover extends JFrame {
         setLocation(this);
     }
 
-
-    private JPanel getButtonPanel() {
+    private JPanel getButtonPanel()
+    {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -99,7 +97,8 @@ public class AutoSaveRecover extends JFrame {
      *
      * @param jFrame JFrame
      */
-    private void setLocation(JFrame jFrame) {
+    private void setLocation(JFrame jFrame)
+    {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
         int w = this.getSize().width;
@@ -113,7 +112,8 @@ public class AutoSaveRecover extends JFrame {
     /**
      * Load autosave file
      */
-    private void loadAutoSaveFile() {
+    private void loadAutoSaveFile()
+    {
         File directory = new File(autoSave.getAutoSaveDirectory());
 
         File[] files = directory.listFiles();
@@ -127,7 +127,8 @@ public class AutoSaveRecover extends JFrame {
                 IFileReader readFile = new JFileReader(file);
                 InputStream in = readFile.getInputStream();
 
-                if (in != null) {
+                if (in != null)
+                {
                     IGraphFile graphFile = new GraphFile(autoSaveFile);
 
                     IWorkspace workspace = new Workspace(graphFile);
@@ -153,11 +154,12 @@ public class AutoSaveRecover extends JFrame {
     /**
      * Remove autosave file
      */
-    private void removeAutoSaveFile() {
+    private void removeAutoSaveFile()
+    {
         File directory = new File(autoSave.getAutoSaveDirectory());
         File[] files = directory.listFiles();
-        for (File file : files) {
-
+        for (File file : files)
+        {
             file.delete();
         }
     }
