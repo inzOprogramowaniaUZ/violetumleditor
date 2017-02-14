@@ -217,11 +217,12 @@ public class ComponentNode extends ColorableNode
     @Override
     public boolean addConnection(IEdge edge)
     {
+        boolean result = false;
         if (edge.getEndNode() != null && this != edge.getEndNode())
         {
-            return true;
+            result = true;
         }
-        return false;
+        return result;
     }
 
     /**
