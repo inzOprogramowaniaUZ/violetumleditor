@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.horstmann.violet</groupId>
@@ -69,6 +69,11 @@
 		</pluginManagement>
 	</build>
 
+    <!-- Modules 'exe' and 'web' are commented out because they're causing problems during project build-->
+    <!--<module>violetproduct-exe</module>-->
+    <!--<module>violetproduct-web</module>-->
+    <!--<module>violetproduct-jnlp</module>-->
+    <!--<module>violetproduct-rpm</module>-->
 
 	<distributionManagement>
 		<repository>

@@ -178,6 +178,24 @@ public class ComponentNode extends ColorableNode
         return tooltip;
     }
 
+    @Override
+    public LineText getName()
+    {
+        return text;
+    }
+
+    @Override
+    public LineText getAttributes()
+    {
+        return null;
+    }
+
+    @Override
+    public LineText getMethods()
+    {
+        return null;
+    }
+
     /**
      * Gets connection point.
      * @param edge
