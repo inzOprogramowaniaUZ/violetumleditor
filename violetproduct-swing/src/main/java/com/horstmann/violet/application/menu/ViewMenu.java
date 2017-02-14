@@ -52,6 +52,7 @@ import com.horstmann.violet.workspace.editorpart.IEditorPart;
  * @author Alexandre de Pellegrin
  * 
  */
+
 @ResourceBundleBean(resourceReference = MenuFactory.class)
 public class ViewMenu extends JMenu
 {

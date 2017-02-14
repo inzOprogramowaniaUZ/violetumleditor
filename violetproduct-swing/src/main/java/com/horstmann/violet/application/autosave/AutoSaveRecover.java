@@ -19,7 +19,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class AutoSaveRecover extends JFrame
@@ -59,7 +58,7 @@ public class AutoSaveRecover extends JFrame
         this.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         this.pack();
         this.setVisible(true);
-        setLocation(this);
+        setLocation();
     }
 
     private JPanel getButtonPanel()
@@ -71,21 +70,25 @@ public class AutoSaveRecover extends JFrame
 
         JButton buttonRecovery = new JButton(this.buttonRecovery);
         buttonRecovery.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 loadAutoSaveFile();
                 dispose();
 
             }
-        });
+        }
+        );
 
         JButton buttonNew = new JButton(this.buttonNew);
         buttonNew.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 removeAutoSaveFile();
                 dispose();
 
             }
-        });
+        }
+        );
         this.getRootPane().setDefaultButton(buttonNew);
         buttonPanel.add(buttonNew);
         buttonPanel.add(buttonRecovery);
@@ -94,10 +97,8 @@ public class AutoSaveRecover extends JFrame
 
     /**
      * Set JFrame position
-     *
-     * @param jFrame JFrame
      */
-    private void setLocation(JFrame jFrame)
+    private void setLocation()
     {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -105,7 +106,6 @@ public class AutoSaveRecover extends JFrame
         int h = this.getSize().height;
         int x = (dimension.width - w) / 2;
         int y = (dimension.height - h) / 2;
-
         this.setLocation(x, y);
     }
 
@@ -119,8 +119,6 @@ public class AutoSaveRecover extends JFrame
         File[] files = directory.listFiles();
 
         for (File file : files) {
-
-
             try {
 
                 IFile autoSaveFile = new LocalFile(file);
@@ -130,23 +128,16 @@ public class AutoSaveRecover extends JFrame
                 if (in != null)
                 {
                     IGraphFile graphFile = new GraphFile(autoSaveFile);
-
                     IWorkspace workspace = new Workspace(graphFile);
-
                     mainFrame.addWorkspace(workspace);
-
                     in.close();
-                    file.delete();
+                    removeAutoSaveFile();
                     isAutoSaveFileLoad = true;
                 }
-
-
-            } catch (IOException e) {
+            }
+            catch (Exception e)
+            {
                 file.delete();
-
-            } catch (Exception e) {
-                file.delete();
-
             }
         }
     }

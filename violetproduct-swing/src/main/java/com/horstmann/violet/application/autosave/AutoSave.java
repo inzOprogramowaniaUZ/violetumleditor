@@ -10,7 +10,6 @@ import javax.swing.Timer;
 import com.horstmann.violet.framework.file.IGraphFile;
 import com.horstmann.violet.workspace.IWorkspace;
 
-
 public class AutoSave implements ActionListener
 {
 	private MainFrame mainFrame;
