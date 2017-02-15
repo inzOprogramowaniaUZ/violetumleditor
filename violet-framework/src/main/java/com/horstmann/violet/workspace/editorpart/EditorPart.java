@@ -35,6 +35,8 @@ import java.awt.geom.Rectangle2D.Double;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.horstmann.violet.product.diagram.abstracts.IGraph;
@@ -47,7 +49,8 @@ import com.horstmann.violet.workspace.editorpart.behavior.IEditorPartBehavior;
  */
 public class EditorPart extends JPanel implements IEditorPart
 {
-
+	
+	private String deleteDialogText = "Delete selected elements?";
     /**
      * Default constructor
      * 
@@ -121,23 +124,32 @@ public class EditorPart extends JPanel implements IEditorPart
      */
     public void removeSelected()
     {
-        this.behaviorManager.fireBeforeRemovingSelectedElements();
-        try
-        {
-            List<INode> selectedNodes = selectionHandler.getSelectedNodes();
-            List<IEdge> selectedEdges = selectionHandler.getSelectedEdges();
-            IEdge[] edgesArray = selectedEdges.toArray(new IEdge[selectedEdges.size()]);
-            INode[] nodesArray = selectedNodes.toArray(new INode[selectedNodes.size()]);
-            graph.removeNode(nodesArray);
-            graph.removeEdge(edgesArray);
-        }
-        finally
-        {
-            this.selectionHandler.clearSelection();
-            this.behaviorManager.fireAfterRemovingSelectedElements();
-        }
+    	if (isUserConfirmedElementsDeletion())
+    	{
+    		this.behaviorManager.fireBeforeRemovingSelectedElements();
+            try
+            {
+                List<INode> selectedNodes = selectionHandler.getSelectedNodes();
+                List<IEdge> selectedEdges = selectionHandler.getSelectedEdges();
+                IEdge[] edgesArray = selectedEdges.toArray(new IEdge[selectedEdges.size()]);
+                INode[] nodesArray = selectedNodes.toArray(new INode[selectedNodes.size()]);
+                graph.removeNode(nodesArray);
+                graph.removeEdge(edgesArray);
+            }
+            finally
+            {
+                this.selectionHandler.clearSelection();
+                this.behaviorManager.fireAfterRemovingSelectedElements();
+            }
+    	}
     }
 
+    private boolean isUserConfirmedElementsDeletion()
+    {
+    	int reply = JOptionPane.showConfirmDialog(null, deleteDialogText, null, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+    	return reply == JOptionPane.YES_NO_OPTION ? true : false;
+    }
+    
     public List<INode> getSelectedNodes()
     {
         return selectionHandler.getSelectedNodes();
