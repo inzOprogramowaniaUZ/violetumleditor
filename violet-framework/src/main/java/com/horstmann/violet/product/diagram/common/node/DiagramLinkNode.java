@@ -53,7 +53,7 @@ public class DiagramLinkNode extends ColorableNode
 //        return ResourceBundleConstant.NODE_AND_EDGE_RESOURCE.getString("note_node.tooltip");
         return "DiagramLinkNode";
     }
-    
+
     @Override
     public Rectangle2D getBounds()
     {

@@ -23,9 +23,12 @@ package com.horstmann.violet.product.diagram.state.node;
 
 import java.awt.Color;
 
+import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.graphics.Separator;
 import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRoundRectangle;
+import com.horstmann.violet.framework.util.MementoCaretaker;
+import com.horstmann.violet.framework.util.ThreeStringMemento;
 import com.horstmann.violet.product.diagram.property.text.decorator.OneLineText;
 import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
@@ -40,7 +43,7 @@ import com.horstmann.violet.product.diagram.state.StateDiagramConstant;
 /**
  * A node_old in a state diagram.
  */
-public class StateNode extends ColorableNode
+public class StateNode extends ColorableNode implements IRevertableProperties
 {
     /**
      * Construct a state node_old with a default size
@@ -232,6 +235,24 @@ public class StateNode extends ColorableNode
         {
             separator.setColor(getBorderColor());
         }
+    }
+
+    private final MementoCaretaker<ThreeStringMemento> caretaker = new MementoCaretaker<ThreeStringMemento>();
+
+    @Override
+    public void beforeUpdate()
+    {
+        caretaker.save(new ThreeStringMemento(name.toString(), onEntry.toString(), onExit.toString()));
+    }
+
+    @Override
+    public void revertUpdate()
+    {
+        ThreeStringMemento memento = caretaker.load();
+
+        name.setText(memento.getFirstValue());
+        onEntry.setText(memento.getSecondValue());
+        onExit.setText(memento.getThirdValue());
     }
 
     private SingleLineText name;

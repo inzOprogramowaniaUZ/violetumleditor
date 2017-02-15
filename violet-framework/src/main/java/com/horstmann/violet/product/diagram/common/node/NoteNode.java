@@ -31,8 +31,11 @@ import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideCustomShape;
 import com.horstmann.violet.framework.injection.resources.ResourceBundleConstant;
 import com.horstmann.violet.framework.theme.ThemeManager;
+import com.horstmann.violet.framework.util.MementoCaretaker;
+import com.horstmann.violet.framework.util.OneStringMemento;
 import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
+import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.product.diagram.property.text.MultiLineText;
 import com.horstmann.violet.workspace.sidebar.colortools.ColorToolsBarPanel;
 
@@ -45,7 +48,7 @@ import com.horstmann.violet.workspace.sidebar.colortools.ColorToolsBarPanel;
  * INode n = getGraph().findNode(endPoint); if (n != end) end.setZ(n.getZ() + 1); } }
  * 
  */
-public class NoteNode extends ColorableNode
+public class NoteNode extends ColorableNode implements IRevertableProperties
 {
     /**
      * Construct a note node_old with a default size and color
@@ -140,12 +143,6 @@ public class NoteNode extends ColorableNode
         return ResourceBundleConstant.NODE_AND_EDGE_RESOURCE.getString("note_node.tooltip");
     }
 
-
-
-
-
-
-
     @Override
     public int getZ()
     {
@@ -189,6 +186,20 @@ public class NoteNode extends ColorableNode
     public void setColor(Color newValue)
     {
         // Nothing to do
+    }
+
+    private final MementoCaretaker<OneStringMemento> caretaker = new MementoCaretaker<OneStringMemento>();
+
+    @Override
+    public void beforeUpdate()
+    {
+        caretaker.save(new OneStringMemento(text.toString()));
+    }
+
+    @Override
+    public void revertUpdate()
+    {
+        text.setText(caretaker.load().getValue());
     }
 
     private MultiLineText text;

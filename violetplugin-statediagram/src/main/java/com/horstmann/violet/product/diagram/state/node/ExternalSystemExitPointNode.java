@@ -4,16 +4,19 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
+import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideCustomShape;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
+import com.horstmann.violet.framework.util.MementoCaretaker;
+import com.horstmann.violet.framework.util.OneStringMemento;
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 import com.horstmann.violet.product.diagram.state.StateDiagramConstant;
 
-public class ExternalSystemExitPointNode extends ColorableNode
+public class ExternalSystemExitPointNode extends ColorableNode implements IRevertableProperties
 {
 	protected static class ExternalSystemEntryPointShape implements ContentInsideCustomShape.ShapeCreator
 	{
@@ -132,6 +135,21 @@ public class ExternalSystemExitPointNode extends ColorableNode
 	/**
 	 * text label near node
 	 */
+
+	private final MementoCaretaker<OneStringMemento> caretaker = new MementoCaretaker<OneStringMemento>();
+
+	@Override
+	public void beforeUpdate()
+	{
+		caretaker.save(new OneStringMemento(name.toString()));
+	}
+
+	@Override
+	public void revertUpdate()
+	{
+		name.setText(caretaker.load().getValue());
+	}
+
 	protected SingleLineText name;
 	/** default node diameter */
 	private static int DEFAULT_DIAMETER = 14;

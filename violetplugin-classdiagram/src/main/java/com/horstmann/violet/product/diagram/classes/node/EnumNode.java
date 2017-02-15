@@ -3,6 +3,9 @@ package com.horstmann.violet.product.diagram.classes.node;
 import com.horstmann.violet.framework.graphics.Separator;
 import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
+import com.horstmann.violet.framework.dialog.IRevertableProperties;
+import com.horstmann.violet.framework.util.MementoCaretaker;
+import com.horstmann.violet.framework.util.ThreeStringMemento;
 import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
 import com.horstmann.violet.product.diagram.property.text.decorator.LargeSizeDecorator;
 import com.horstmann.violet.product.diagram.property.text.decorator.OneLineText;
@@ -18,7 +21,7 @@ import java.awt.*;
 /**
  * A class node in a class diagram.
  */
-public class EnumNode extends ColorableNode
+public class EnumNode extends ColorableNode implements IRevertableProperties
 {
 	/**
      * Construct a class node with a default size
@@ -149,6 +152,23 @@ public class EnumNode extends ColorableNode
     public MultiLineText getAttributes()
     {
         return attributes;
+    }
+
+    private final MementoCaretaker<ThreeStringMemento> caretaker = new MementoCaretaker<ThreeStringMemento>();
+
+    @Override
+    public void beforeUpdate()
+    {
+        caretaker.save(new ThreeStringMemento(name.toString(), attributes.toString()));
+    }
+
+    @Override
+    public void revertUpdate()
+    {
+        ThreeStringMemento memento = caretaker.load();
+
+        name.setText(memento.getFirstValue());
+        attributes.setText(memento.getSecondValue());
     }
 
     private SingleLineText name;

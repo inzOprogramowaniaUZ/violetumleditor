@@ -2,8 +2,11 @@ package com.horstmann.violet.product.diagram.communication.node;
 
 import java.awt.Color;
 
+import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
+import com.horstmann.violet.framework.util.MementoCaretaker;
+import com.horstmann.violet.framework.util.OneStringMemento;
 import com.horstmann.violet.product.diagram.communication.CommunicationDiagramConstant;
 import com.horstmann.violet.product.diagram.property.text.decorator.OneLineText;
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
@@ -18,7 +21,7 @@ import com.horstmann.violet.product.diagram.property.text.decorator.UnderlineDec
  * @author Alexandre de Pellegrin / Cays S. Horstmann
  *
  */
-public class ObjectCommuNode extends ColorableNode
+public class ObjectCommuNode extends ColorableNode implements IRevertableProperties
 {
 	public ObjectCommuNode()
 	{
@@ -105,6 +108,20 @@ public class ObjectCommuNode extends ColorableNode
 			return new LargeSizeDecorator(new UnderlineDecorator(new OneLineText(text)));
 		}
 	};
+
+	private final MementoCaretaker<OneStringMemento> caretaker = new MementoCaretaker<OneStringMemento>();
+
+	@Override
+	public void beforeUpdate()
+	{
+		caretaker.save(new OneStringMemento(name.toString()));
+	}
+
+	@Override
+	public void revertUpdate()
+	{
+		name.setText(caretaker.load().getValue());
+	}
 	
 	private SingleLineText name;
     private static int DEFAULT_WIDTH = 100;

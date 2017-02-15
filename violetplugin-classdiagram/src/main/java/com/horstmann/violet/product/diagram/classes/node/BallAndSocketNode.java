@@ -3,8 +3,11 @@ package com.horstmann.violet.product.diagram.classes.node;
 import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideCustomShape;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideEllipse;
+import com.horstmann.violet.framework.util.BallAndSocketMemento;
+import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.product.diagram.abstracts.Direction;
 import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
+import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
@@ -23,7 +26,7 @@ import static com.horstmann.violet.product.diagram.classes.node.BallAndSocketNod
  *
  * @author Jakub Homlala
  */
-public class BallAndSocketNode extends ColorableNode
+public class BallAndSocketNode extends ColorableNode implements IRevertableProperties
 {
     protected enum Types
     {
@@ -286,6 +289,29 @@ public class BallAndSocketNode extends ColorableNode
             this.selectedType = type.getSelectedPos();
             refreshBallAndSocketLayout();
         }
+    }
+
+    private final MementoCaretaker<BallAndSocketMemento> caretaker = new MementoCaretaker<BallAndSocketMemento>();
+
+    @Override
+    public void beforeUpdate()
+    {
+        caretaker.save(new BallAndSocketMemento(name.toString(), selectedOrientation, selectedType));
+    }
+
+    @Override
+    public void revertUpdate()
+    {
+        BallAndSocketMemento memento = caretaker.load();
+        name.setText(memento.getName());
+
+        selectedOrientation = memento.getSelectedOrientation();
+        selectedType = memento.getSelectedType();
+
+        orientation.setSelectedIndex(selectedOrientation);
+        type.setSelectedIndex(selectedType);
+
+        refreshBallAndSocketLayout();
     }
 
     private SingleLineText name;
