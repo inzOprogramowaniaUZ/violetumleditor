@@ -172,6 +172,7 @@ public class EnumNode extends ColorableNode implements INamedNode, IRevertablePr
 
         name.setText(memento.getFirstValue());
         attributes.setText(memento.getSecondValue());
+    }
 
     @Override
     public LineText getMethods() {
