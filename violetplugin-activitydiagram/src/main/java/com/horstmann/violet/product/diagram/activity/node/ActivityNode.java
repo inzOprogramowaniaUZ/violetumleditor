@@ -122,7 +122,8 @@ public class  ActivityNode extends ColorableNode implements IRevertablePropertie
     public void revertUpdate()
     {
         name.setText(caretaker.load().getValue());
-
+    }
+    
     @Override
     public LineText getAttributes() {
         return null;
