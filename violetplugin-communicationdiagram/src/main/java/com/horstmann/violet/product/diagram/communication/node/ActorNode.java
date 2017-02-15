@@ -29,6 +29,7 @@ import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.framework.util.OneStringMemento;
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
+import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.communication.CommunicationDiagramConstant;
 import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
@@ -37,9 +38,6 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
-
-import com.horstmann.violet.framework.graphics.content.VerticalLayout;
 
 /**
  * An actor node_old in a use case diagram.
@@ -195,9 +193,19 @@ public class ActorNode extends ColorableNode implements IRevertableProperties
     /**
      * Gets the name property value.
      */
-    public SingleLineText getName()
+    public LineText getName()
     {
         return name;
+    }
+
+    @Override
+    public LineText getAttributes() {
+        return null;
+    }
+
+    @Override
+    public LineText getMethods() {
+        return null;
     }
 
 

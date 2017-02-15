@@ -27,20 +27,23 @@ import java.util.Collections;
 import java.util.List;
 
 import com.horstmann.violet.framework.dialog.IRevertableProperties;
+
 import com.horstmann.violet.framework.graphics.Separator;
 import com.horstmann.violet.framework.graphics.content.*;
-import com.horstmann.violet.framework.graphics.content.VerticalLayout;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
+
 import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.framework.util.ThreeStringMemento;
+
+import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
+import com.horstmann.violet.product.diagram.abstracts.node.INode;
+
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.object.ObjectDiagramConstant;
 import com.horstmann.violet.product.diagram.object.edge.AssociationEdge;
 import com.horstmann.violet.product.diagram.property.text.LineText;
-import com.horstmann.violet.product.diagram.property.text.decorator.*;
-import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
-import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
+import com.horstmann.violet.product.diagram.property.text.decorator.*;
 
 public class ObjectNode extends ColorableNode implements IRevertableProperties
 {
@@ -188,6 +191,16 @@ public class ObjectNode extends ColorableNode implements IRevertableProperties
     public LineText getName()
     {
         return name;
+    }
+
+    @Override
+    public LineText getAttributes() {
+        return type;
+    }
+
+    @Override
+    public LineText getMethods() {
+        return null;
     }
 
     public void setType(LineText n)

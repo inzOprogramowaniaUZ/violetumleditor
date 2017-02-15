@@ -6,8 +6,8 @@ import com.horstmann.violet.framework.graphics.shape.ContentInsideCustomShape;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
 import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.framework.util.OneStringMemento;
-import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
+import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 import com.horstmann.violet.product.diagram.state.StateDiagramConstant;
@@ -120,9 +120,19 @@ public class ExternalSystemEntryPointNode extends ColorableNode implements IReve
 	 *
 	 * @return the class name
 	 */
-	public SingleLineText getName()
+	public LineText getName()
 	{
 		return name;
+	}
+
+	@Override
+	public LineText getAttributes() {
+		return null;
+	}
+
+	@Override
+	public LineText getMethods() {
+		return null;
 	}
 
 	/**

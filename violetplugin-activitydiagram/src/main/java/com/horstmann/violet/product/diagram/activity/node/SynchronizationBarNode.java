@@ -21,9 +21,6 @@
 
 package com.horstmann.violet.product.diagram.activity.node;
 
-import java.util.List;
-import java.util.MissingResourceException;
-
 import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.graphics.content.Content;
 import com.horstmann.violet.framework.graphics.content.ContentBackground;
@@ -34,10 +31,14 @@ import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.framework.util.OneIntegerMemento;
 import com.horstmann.violet.product.diagram.abstracts.Direction;
 import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
-import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.activity.ActivityDiagramConstant;
+import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.property.choiceList.ChoiceList;
 import com.horstmann.violet.product.diagram.property.choiceList.TextChoiceList;
+import com.horstmann.violet.product.diagram.property.text.LineText;
+
+import java.util.List;
+import java.util.MissingResourceException;
 
 /**
  * A synchronization bar node_old in an activity diagram.
@@ -101,6 +102,21 @@ public class SynchronizationBarNode extends ColorableNode implements IRevertable
     public String getToolTip()
     {
         return ActivityDiagramConstant.ACTIVITY_DIAGRAM_RESOURCE.getString("tooltip.synchronization_node");
+    }
+
+    @Override
+    public LineText getName() {
+        return null;
+    }
+
+    @Override
+    public LineText getAttributes() {
+        return null;
+    }
+
+    @Override
+    public LineText getMethods() {
+        return null;
     }
 
     @Override

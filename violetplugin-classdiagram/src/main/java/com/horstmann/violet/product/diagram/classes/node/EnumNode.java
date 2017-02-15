@@ -6,22 +6,24 @@ import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
 import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.framework.util.ThreeStringMemento;
-import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
-import com.horstmann.violet.product.diagram.property.text.decorator.LargeSizeDecorator;
-import com.horstmann.violet.product.diagram.property.text.decorator.OneLineText;
-import com.horstmann.violet.product.diagram.property.text.decorator.PrefixDecorator;
-import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
+import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
+import com.horstmann.violet.product.diagram.common.node.ColorableNode;
+import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.property.text.MultiLineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
+import com.horstmann.violet.product.diagram.property.text.decorator.LargeSizeDecorator;
+import com.horstmann.violet.product.diagram.property.text.decorator.OneLineText;
+import com.horstmann.violet.product.diagram.property.text.decorator.PrefixDecorator;
 
 import java.awt.*;
 
 /**
  * A class node in a class diagram.
  */
-public class EnumNode extends ColorableNode implements IRevertableProperties
+
+public class EnumNode extends ColorableNode implements INamedNode, IRevertableProperties
 {
 	/**
      * Construct a class node with a default size
@@ -149,10 +151,11 @@ public class EnumNode extends ColorableNode implements IRevertableProperties
      *
      * @return the attributes of this class
      */
-    public MultiLineText getAttributes()
+    public LineText getAttributes()
     {
         return attributes;
     }
+
 
     private final MementoCaretaker<ThreeStringMemento> caretaker = new MementoCaretaker<ThreeStringMemento>();
 
@@ -169,6 +172,11 @@ public class EnumNode extends ColorableNode implements IRevertableProperties
 
         name.setText(memento.getFirstValue());
         attributes.setText(memento.getSecondValue());
+
+    @Override
+    public LineText getMethods() {
+        return null;
+
     }
 
     private SingleLineText name;
@@ -179,12 +187,5 @@ public class EnumNode extends ColorableNode implements IRevertableProperties
     private static final int MIN_NAME_HEIGHT = 45;
     private static final int MIN_WIDTH = 100;
 
-    private static final LineText.Converter NAME_CONVERTER = new LineText.Converter()
-    {
-        @Override
-        public OneLineText toLineString(String text)
-        {
-            return new PrefixDecorator( new LargeSizeDecorator(new OneLineText(text)), "<center>«enumeration»</center>");
-        }
-    };
+    private static final LineText.Converter NAME_CONVERTER = text -> new PrefixDecorator( new LargeSizeDecorator(new OneLineText(text)), "<center>«enumeration»</center>");
 }

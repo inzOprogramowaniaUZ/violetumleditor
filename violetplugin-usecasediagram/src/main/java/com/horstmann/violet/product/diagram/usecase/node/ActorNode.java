@@ -21,23 +21,22 @@
 
 package com.horstmann.violet.product.diagram.usecase.node;
 
-import java.awt.*;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.graphics.content.*;
-import com.horstmann.violet.framework.graphics.content.VerticalLayout;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideCustomShape;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
 import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.framework.util.OneStringMemento;
-import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
+import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 import com.horstmann.violet.product.diagram.usecase.UseCaseDiagramConstant;
+
+import java.awt.*;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * An actor node_old in a use case diagram.
@@ -180,7 +179,7 @@ public class ActorNode extends ColorableNode implements IRevertableProperties
     /**
      * Gets the name property value.
      */
-    public SingleLineText getName()
+    public LineText getName()
     {
         return name;
     }
@@ -197,6 +196,15 @@ public class ActorNode extends ColorableNode implements IRevertableProperties
     public void revertUpdate()
     {
         name.setText(caretaker.load().getValue());
+    }
+    @Override
+    public LineText getAttributes() {
+        return null;
+    }
+
+    @Override
+    public LineText getMethods() {
+        return null;
     }
 
     /** Actor name */
