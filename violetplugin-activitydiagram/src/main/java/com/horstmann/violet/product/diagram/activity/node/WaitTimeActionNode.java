@@ -11,7 +11,6 @@ import com.horstmann.violet.product.diagram.activity.ActivityDiagramConstant;
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
-import com.sun.deploy.panel.IProperty;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
