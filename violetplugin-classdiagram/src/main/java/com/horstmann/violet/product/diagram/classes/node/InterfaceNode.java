@@ -22,7 +22,7 @@ import java.awt.geom.Point2D;
 /**
  * An interface node in a class diagram.
  */
-public class InterfaceNode extends ColorableNode implements INamedNode, IRevertablePropertie
+public class InterfaceNode extends ColorableNode implements INamedNode, IRevertableProperties
 {
     /**
      * Construct an interface node with a default size and the text <<interface>>.
