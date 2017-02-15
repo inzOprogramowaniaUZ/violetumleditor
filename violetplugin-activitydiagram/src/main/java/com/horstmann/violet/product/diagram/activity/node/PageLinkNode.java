@@ -134,6 +134,7 @@ public class PageLinkNode extends ColorableNode implements IRevertableProperties
     public void revertUpdate()
     {
         name.setText(caretaker.load().getValue());
+    }
 
     @Override
     public LineText getAttributes() {
