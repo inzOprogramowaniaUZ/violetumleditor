@@ -155,6 +155,8 @@ public class WaitTimeActionNode extends ColorableNode implements IRevertableProp
     public void revertUpdate()
     {
         name.setText(caretaker.load().getValue());
+    }    
+        
     @Override
     public LineText getAttributes() {
         return null;
