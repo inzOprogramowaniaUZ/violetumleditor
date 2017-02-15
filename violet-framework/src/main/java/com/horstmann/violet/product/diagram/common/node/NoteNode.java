@@ -143,16 +143,6 @@ public class NoteNode extends ColorableNode implements IRevertableProperties
     }
 
     @Override
-    public LineText getAttributes() {
-        return null;
-    }
-
-    @Override
-    public LineText getMethods() {
-        return null;
-    }
-
-    @Override
     public int getZ()
     {
         for (IEdge e : getGraph().getAllEdges())
