@@ -41,6 +41,7 @@ import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.product.diagram.property.text.MultiLineText;
+import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.workspace.sidebar.colortools.ColorToolsBarPanel;
 
 public class NoteNode extends ColorableNode implements IRevertableProperties
