@@ -16,7 +16,8 @@ import com.horstmann.violet.framework.injection.resources.annotation.ResourceBun
  * @author Marta Mrugalska
  */
 
-public class SettingsDialog extends javax.swing.JDialog {
+public class SettingsDialog extends javax.swing.JDialog
+{
 
 	private static final long serialVersionUID = 1L;
 	private static final String FORM_NAME = "FormSettings";
@@ -24,7 +25,7 @@ public class SettingsDialog extends javax.swing.JDialog {
     
 	
 	private javax.swing.JCheckBox enableAutosaveCheckbox;
-    private javax.swing.JTextField pathAutosaveTextField;
+    private javax.swing.JTextField pathAutosaveTextField ;
     private javax.swing.JButton okButton;
     private javax.swing.JLabel saveDirectoryLabel;
     private javax.swing.JLabel saveIntervalLabel;
@@ -67,7 +68,8 @@ public class SettingsDialog extends javax.swing.JDialog {
      * Settings dialogue
      * @param parent and modal
      */
-    public SettingsDialog(java.awt.Frame parent, boolean modal, IAutoSave autosaveListener) {
+    public SettingsDialog(java.awt.Frame parent, boolean modal, IAutoSave autosaveListener)
+    {
         super(parent, modal);
         this.autosaveListener = autosaveListener;
         autosave = new AutosaveSettings();
@@ -81,7 +83,8 @@ public class SettingsDialog extends javax.swing.JDialog {
     /**
      * Enable disable components
      */
-    private void enableDisableComponents() {
+    private void enableDisableComponents()
+    {
         saveIntervalTextField.setEnabled(enableAutosaveCheckbox.isSelected());
         saveIntervalLabel.setEnabled(enableAutosaveCheckbox.isSelected());
         secondsLabel.setEnabled(enableAutosaveCheckbox.isSelected());
@@ -92,7 +95,8 @@ public class SettingsDialog extends javax.swing.JDialog {
 
     /**Init components
      */
-    private void initComponents() {
+    private void initComponents()
+    {
         enableAutosaveCheckbox = new javax.swing.JCheckBox();
         saveIntervalLabel = new javax.swing.JLabel();
         saveIntervalTextField = new javax.swing.JTextField();
@@ -146,7 +150,7 @@ public class SettingsDialog extends javax.swing.JDialog {
 	
 	            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 	                File file = chooser.getSelectedFile();
-	                pathAutosaveTextField.setText(file.getAbsolutePath());
+	                pathAutosaveTextField.setText(file.getAbsolutePath()+ File.separator + "VioletUML");
 	            }
             }
         });
@@ -233,8 +237,10 @@ public class SettingsDialog extends javax.swing.JDialog {
      * Enable autosave checkbox ithem state changed
      * @param event
      */
-    private void enableAutosaveCheckboxItemStateChanged(java.awt.event.ItemEvent evt) {
-        if (!autosave.isLoadingDialog()) {
+    private void enableAutosaveCheckboxItemStateChanged(java.awt.event.ItemEvent evt)
+    {
+        if (!autosave.isLoadingDialog())
+        {
             enableDisableComponents();
         }
     }
@@ -251,11 +257,13 @@ public class SettingsDialog extends javax.swing.JDialog {
      * Save button action performed
      * @param event
      */
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt)
+    {
         if (validationIsOK()) {
         	saveSettings();
             autosave.saveSettings();
-            if (this.autosaveListener != null) {
+            if (this.autosaveListener != null
+                    ) {
             	this.autosaveListener.reloadSettings();
             }
             dispose();
@@ -266,14 +274,17 @@ public class SettingsDialog extends javax.swing.JDialog {
      * Check if validation is corrected
      * @return what is validation
      */
-    private boolean validationIsOK() {
-        if (!enableAutosaveCheckbox.isSelected()) {
+    private boolean validationIsOK()
+    {
+        if (!enableAutosaveCheckbox.isSelected())
+        {
             return true;
         }
 
         String seconds = saveIntervalTextField.getText();
 
-        try {
+        try
+        {
             Integer.parseInt(seconds);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, invalidValueText);
@@ -281,7 +292,8 @@ public class SettingsDialog extends javax.swing.JDialog {
             return false;
         }
 
-        if (pathAutosaveTextField.getText().trim().isEmpty()) {
+        if (pathAutosaveTextField.getText().trim().isEmpty())
+        {
             JOptionPane.showMessageDialog(this, invalidValueText);
             pathAutosaveTextField.requestFocus();
             return false;
@@ -289,19 +301,14 @@ public class SettingsDialog extends javax.swing.JDialog {
 
         File directory = new File(pathAutosaveTextField.getText());
 
-        if (!directory.isDirectory()) {
-            JOptionPane.showMessageDialog(this, invalidValueText);
-            pathAutosaveTextField.requestFocus();
-            return false;
-        }
-
         return true;
     }
     
     /**
      * Save settings
      */
-    private void saveSettings() {
+    private void saveSettings()
+    {
     	autosave.setEnableAutosave(enableAutosaveCheckbox.isSelected());
     	autosave.setAutosavePath(pathAutosaveTextField.getText());
     	autosave.setAutosaveInterval(Integer.parseInt(saveIntervalTextField.getText()));
@@ -310,7 +317,8 @@ public class SettingsDialog extends javax.swing.JDialog {
     /**
      * Load settings
      */
-    private void loadSettings() {
+    private void loadSettings()
+    {
         enableAutosaveCheckbox.setSelected(autosave.isEnableAutosave());
         saveIntervalTextField.setText(String.valueOf(autosave.getAutosaveInterval()));
         pathAutosaveTextField.setText(autosave.getAutosavePath());

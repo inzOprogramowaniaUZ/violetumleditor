@@ -18,6 +18,7 @@ public class AutoSave implements ActionListener
 	private boolean autoSaveEnabled;
 	private String autoSaveDirectory;
 
+
     /**
      * Constructor AutoSave
      *
@@ -26,10 +27,8 @@ public class AutoSave implements ActionListener
     public AutoSave(MainFrame mainFrame)
     {
 		BeanInjector.getInjector().inject(this);
-        AutosaveSettings settings = new AutosaveSettings();
-        if (settings.isEnableAutosave()) {
-            loadSettings();
-
+        if (loadSettings())
+        {
 		if (mainFrame != null)
 			{
 				this.mainFrame = mainFrame;
@@ -44,6 +43,7 @@ public class AutoSave implements ActionListener
 
     public String getAutoSaveDirectory()
     {
+
         return autoSaveDirectory;
     }
 
@@ -98,7 +98,7 @@ public class AutoSave implements ActionListener
      */
     private void initializeTimer()
     {
-        saveTimer = new Timer(saveInterval, (ActionListener) this);
+        saveTimer = new Timer(saveInterval*1000, (ActionListener) this);
         saveTimer.setInitialDelay(0);
         saveTimer.start();
     }
@@ -113,6 +113,9 @@ public class AutoSave implements ActionListener
     {
         for (IWorkspace workspace : mainFrame.getWorkspaceList())
         {
+            reloadSettings();
+            createVioletDirectory();
+
             IGraphFile graphFile = workspace.getGraphFile();
             if (graphFile.isSaveRequired())
             {
@@ -121,9 +124,11 @@ public class AutoSave implements ActionListener
         }
     }
     
-    public void reloadSettings() {
+    public void reloadSettings()
+    {
     	loadSettings();
-    	if (mainFrame != null) {
+    	if (mainFrame != null)
+    	{
 			for (IWorkspace workspace : mainFrame.getWorkspaceList())
 	        {
 	            IGraphFile graphFile = workspace.getGraphFile();
@@ -132,20 +137,19 @@ public class AutoSave implements ActionListener
     	}
     }
         
-	private void loadSettings() {
+	private boolean loadSettings()
+    {
 		AutosaveSettings settings = new AutosaveSettings();
-		if (settings.isEnableAutosave()) {
+		if (settings.isEnableAutosave())
+		{
 			saveInterval = settings.getAutosaveInterval();
 			autoSaveDirectory = settings.getAutosavePath();
 
-			initializeTimer();
-		} else {
-			if (saveTimer != null) {
-				saveTimer.stop();
-				saveTimer = null;
-			}
+			return true;
 		}
-		
+		else
+
+        return false;
 	}
 
 }

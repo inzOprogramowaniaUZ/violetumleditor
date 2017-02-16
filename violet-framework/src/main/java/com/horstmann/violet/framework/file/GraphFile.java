@@ -103,7 +103,6 @@ public class GraphFile implements IGraphFile
     public void setSaveRequired()
     {
         this.isSaveRequired = true;
-        this.isAutoSaveRequired = true;
         fireGraphModified();
     }
 
@@ -141,7 +140,6 @@ public class GraphFile implements IGraphFile
             OutputStream outputStream = fileSaver.getOutputStream();
             this.filePersistenceService.write(this.graph, outputStream);
             this.isSaveRequired = false;
-            this.isAutoSaveRequired = false;
             fireGraphSaved();
             this.currentFilename = fileSaver.getFileDefinition().getFilename();
             this.currentDirectory = fileSaver.getFileDefinition().getDirectory();
@@ -155,11 +153,7 @@ public class GraphFile implements IGraphFile
 	@Override
 	public void autoSave(String fileDirectory) {
 		try {
-			
-			if (!this.isAutoSaveRequired) {
-				return;
-			}
-		
+
 			if (this.autoSaveFileName == null) {
 					this.autoSaveFileName = (this.currentFilename == null ? java.util.UUID.randomUUID().toString() : this.currentFilename) + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".html";
 				}
@@ -170,8 +164,7 @@ public class GraphFile implements IGraphFile
 				}
 			
 			if (autoSaveFile.exists()) {
-				this.isAutoSaveRequired = false;
-				JFileWriter jfilewriter = new JFileWriter(autoSaveFile);
+			    JFileWriter jfilewriter = new JFileWriter(autoSaveFile);
 				this.filePersistenceService.write(this.graph, jfilewriter.getOutputStream());
 			}
 		} catch (Exception e) {
@@ -348,7 +341,8 @@ public class GraphFile implements IGraphFile
     }
     
     @Override
-	public void autoSaveSettingsWasChanged() {
+	public void autoSaveSettingsWasChanged()
+    {
 		this.autoSaveFile = null;
 	}
     
@@ -404,7 +398,5 @@ public class GraphFile implements IGraphFile
 
     private File autoSaveFile;
     private String autoSaveFileName;
-    private boolean isAutoSaveRequired = false;
-    
 
 }

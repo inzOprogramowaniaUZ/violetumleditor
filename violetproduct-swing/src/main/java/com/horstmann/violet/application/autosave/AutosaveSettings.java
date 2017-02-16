@@ -8,12 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Violet's autosave settings
- * @author Marta Mrugalska
- */
-
-public class AutosaveSettings {
+public class AutosaveSettings
+{
 
     private static final String AUTOSAVE_ENABLED = "autosave_enabled";
     private static final String AUTOSAVE_INTERVAL = "autosave_interval";
@@ -24,12 +20,13 @@ public class AutosaveSettings {
     private boolean loadingDialog = false;
     private boolean autosaveEnabled = false;
     private int autosaveInterval;
-    private String autosavePath;
+    private String autosavePath= "";
 
     /**
      * AutoSave settings
      */
-    public AutosaveSettings() {
+    public AutosaveSettings()
+    {
         loadSettings();
     }
 
@@ -37,7 +34,8 @@ public class AutosaveSettings {
      * Check is loading dialog
      * @return boolean
      */
-    public boolean isLoadingDialog() {
+    public boolean isLoadingDialog()
+    {
         return this.loadingDialog;
     }
 
@@ -45,7 +43,8 @@ public class AutosaveSettings {
      * Check is enable autosave
      * @return boolean
      */
-    public boolean isEnableAutosave() {
+    public boolean isEnableAutosave()
+    {
         return this.autosaveEnabled;
     }
 
@@ -53,7 +52,8 @@ public class AutosaveSettings {
      * Set enable autosave
      * @param enable autosave
      */
-    public void setEnableAutosave(boolean enableAutosave) {
+    public void setEnableAutosave(boolean enableAutosave)
+    {
         this.autosaveEnabled = enableAutosave;
     }
 
@@ -61,7 +61,8 @@ public class AutosaveSettings {
      * Get autosave interval
      * @return autosave interval
      */
-    public int getAutosaveInterval() {
+    public int getAutosaveInterval()
+    {
         return this.autosaveInterval;
     }
 
@@ -69,7 +70,8 @@ public class AutosaveSettings {
      * Set autosave interval
      * @param autosave interval
      */
-    public void setAutosaveInterval(int autosaveInterval) {
+    public void setAutosaveInterval(int autosaveInterval)
+    {
         this.autosaveInterval = autosaveInterval;
     }
 
@@ -77,7 +79,8 @@ public class AutosaveSettings {
      * Get autosave patch
      * @return string autosave path
      */
-    public String getAutosavePath() {
+    public String getAutosavePath()
+    {
         return this.autosavePath;
     }
 
@@ -85,32 +88,45 @@ public class AutosaveSettings {
      * Set autosave path
      * @param autosave path
      */
-    public void setAutosavePath(String autosavePath) {
+    public void setAutosavePath(String autosavePath)
+    {
         this.autosavePath = autosavePath;
     }
 
     /**
      * Save settings
      */
-    public void saveSettings() {
-        try {
+    public void saveSettings()
+    {
+        try
+        {
             FileOutputStream output = new FileOutputStream(AUTOSAVE_CONFIGURATION_FILE);
             this.properties.setProperty(AUTOSAVE_ENABLED, String.valueOf(isEnableAutosave()));
             this.properties.setProperty(AUTOSAVE_INTERVAL, String.valueOf(getAutosaveInterval()));
             this.properties.setProperty(AUTOSAVE_PATH, getAutosavePath());
             this.properties.store(output, null);
 
-        } catch (FileNotFoundException ex) {
+        }
+        catch (FileNotFoundException ex)
+        {
             System.err.println("File not found");
             ex.printStackTrace();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
         	ex.printStackTrace();
-        } finally {
+        }
+        finally
+        {
         	this.loadingDialog = false;
-             	if (this.input != null) {
-                try {
+             	if (this.input != null)
+             	{
+                try
+                {
                 	this.input.close();
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                 	System.err.println("Unable to close file");
                 	e.printStackTrace();
                 }
@@ -121,23 +137,33 @@ public class AutosaveSettings {
     /**
      * Load settings
      */
-    private void loadSettings() {
+    private void loadSettings()
+    {
     	this.loadingDialog = true;
-        try {
+        try
+        {
         	readSettingsFromFile();
             this.properties.load(this.input);
             setEnableAutosave(Boolean.parseBoolean(this.properties.getProperty(AUTOSAVE_ENABLED, "true")));
-            setAutosaveInterval(Integer.parseInt((this.properties.getProperty(AUTOSAVE_INTERVAL, "120"))));
-            setAutosavePath(this.properties.getProperty(AUTOSAVE_PATH, System.getProperty("user.home") + File.separator + "VioletUML"));
-        } catch (IOException io) {
+            setAutosaveInterval(Integer.parseInt((this.properties.getProperty(AUTOSAVE_INTERVAL, "10"))));
+            setAutosavePath(this.properties.getProperty(AUTOSAVE_PATH, System.getProperty("user.home")+ File.separator + "VioletUML"));
+        }
+        catch (IOException io)
+        {
             System.err.println("Cannon read the settings from the file");
             io.printStackTrace();
-        } finally {
+        }
+        finally
+        {
         	this.loadingDialog = false;
-            if (this.input != null) {
-                try {
+            if (this.input != null)
+            {
+                try
+                {
                 	this.input.close();
-                } catch (IOException exception) {
+                }
+                catch (IOException exception)
+                {
                 	System.err.println("Unable to close file");
                     exception.printStackTrace();
                 }
@@ -148,22 +174,31 @@ public class AutosaveSettings {
     /**
      * Read settings from file or create new file with settings
      */
-    public void readSettingsFromFile() {   	   
-    	try {
+    public void readSettingsFromFile()
+    {
+    	try
+        {
     		this.input = new FileInputStream(AUTOSAVE_CONFIGURATION_FILE);
-        } catch (FileNotFoundException ex) {
+        }
+        catch (FileNotFoundException ex)
+        {
         	createNewConfigurationFile();
+
         }
     }
 
     /**
      * Create new copy of configuration file
      */
-	private void createNewConfigurationFile() {
-		try {
+	private void createNewConfigurationFile()
+    {
+		try
+        {
 			new File(AUTOSAVE_CONFIGURATION_FILE).createNewFile();
 			this.input = new FileInputStream(AUTOSAVE_CONFIGURATION_FILE);
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+        {
 			System.err.println("Failed to create new configuration file");
 			e.printStackTrace();
 		}
