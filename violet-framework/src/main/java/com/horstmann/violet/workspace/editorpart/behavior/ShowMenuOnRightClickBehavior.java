@@ -30,10 +30,10 @@ public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
     }
     
     @Override
-    public void onMouseClicked(MouseEvent event)
+    public void onMousePressed(MouseEvent event)
     {
-        boolean isButton3Clicked = (event.getButton() == MouseEvent.BUTTON3);
-        if (event.getClickCount() == 1 && isButton3Clicked)
+        boolean isButton3Pressed = (event.getButton() == MouseEvent.BUTTON3);
+        if (event.getClickCount() == 1 && isButton3Pressed)
         {
             double zoom = editorPart.getZoomFactor();
             final Point2D mousePoint = new Point2D.Double(event.getX() / zoom, event.getY() / zoom);
