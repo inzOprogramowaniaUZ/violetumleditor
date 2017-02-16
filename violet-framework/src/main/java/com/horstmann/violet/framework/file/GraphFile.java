@@ -47,6 +47,10 @@ public class GraphFile implements IGraphFile
         try
         {
 			this.graph = graphClass.newInstance();
+			this.autoSaveFilename = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".html";
+
+			this.autoSaveFile = new File(this.autoSaveDirectory + this.autoSaveFilename);
+			this.autoSaveFile.createNewFile();
         }
         catch (Exception e)
         {
@@ -80,16 +84,9 @@ public class GraphFile implements IGraphFile
         {
             throw new IOException("Open file action cancelled by user");
         }
-	InputStream in = fileOpener.getInputStream();
-        if (in != null)
-        {
-			this.graph = this.filePersistenceService.read(in);
-	
-       }
-        else
+
         InputStream inputStream = fileReader.getInputStream();
         if (inputStream == null)
-
         {
             IFile fileDefinition = fileReader.getFileDefinition();
             throw new IOException("Unable to read file " + fileDefinition.getFilename() + " from location " +
@@ -104,7 +101,6 @@ public class GraphFile implements IGraphFile
         this.autoSaveFile = new File(this.autoSaveDirectory + this.autoSaveFilename);
         this.autoSaveFile.createNewFile();
     }
-
 
     @Override
     public IGraph getGraph()
@@ -174,34 +170,39 @@ public class GraphFile implements IGraphFile
             throw new RuntimeException(e);
         }
     }
-    
-	@Override
-	public void autoSave(String fileDirectory) {
-		try {
 
-			if (this.autoSaveFileName == null) {
-					this.autoSaveFileName = (this.currentFilename == null ? java.util.UUID.randomUUID().toString() : this.currentFilename) + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".html";
-				}
-			
-				if ((autoSaveFile == null) || ((autoSaveFile != null) && (!autoSaveFile.getAbsolutePath().contains(fileDirectory) == false))) {
-				 	this.autoSaveFile = new File(fileDirectory + File.separator + this.autoSaveFileName);
-				 	autoSaveFile.createNewFile();
-				}
-			
-			if (autoSaveFile.exists()) {
-			    JFileWriter jfilewriter = new JFileWriter(autoSaveFile);
-				this.filePersistenceService.write(this.graph, jfilewriter.getOutputStream());
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	@Override
+    @Override
+    public void autoSave(String fileDirectory) {
+        try {
+
+            if (this.autoSaveFileName == null) {
+                this.autoSaveFileName = (this.currentFilename == null ? java.util.UUID.randomUUID().toString() : this.currentFilename) + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".html";
+            }
+
+            if ((autoSaveFile == null) || ((autoSaveFile != null) && (!autoSaveFile.getAbsolutePath().contains(fileDirectory) == false))) {
+                this.autoSaveFile = new File(fileDirectory + File.separator + this.autoSaveFileName);
+                autoSaveFile.createNewFile();
+            }
+
+            if (autoSaveFile.exists()) {
+                JFileWriter jfilewriter = new JFileWriter(autoSaveFile);
+                this.filePersistenceService.write(this.graph, jfilewriter.getOutputStream());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void autoSaveSettingsWasChanged()
+    {
+        this.autoSaveFile = null;
+    }
+
+    @Override
 	public void removeBackup() {
-		if ((autoSaveFile != null) && (autoSaveFile.exists())) {
+		if (autoSaveFile.exists())
 			autoSaveFile.delete();
-		}
 	}
 
     @Override
@@ -373,13 +374,6 @@ public class GraphFile implements IGraphFile
         PrintEngine engine = new PrintEngine(this.graph);
         engine.start();
     }
-    
-    @Override
-	public void autoSaveSettingsWasChanged()
-    {
-		this.autoSaveFile = null;
-	}
-    
 
     private IGraph graph;
 
@@ -387,11 +381,13 @@ public class GraphFile implements IGraphFile
      * Needed to identify the physical file used to save the graph
      */
     private String currentFilename;
+    private String autoSaveFilename;
 
     /**
      * Needed to identify the physical file used to save the graph
      */
     private String currentDirectory;
+    private final String autoSaveDirectory = System.getProperty("user.home") + File.separator + "VioletUML" + File.separator;
 
     private boolean isSaveRequired = false;
 
@@ -432,5 +428,4 @@ public class GraphFile implements IGraphFile
 
     private File autoSaveFile;
     private String autoSaveFileName;
-
 }
