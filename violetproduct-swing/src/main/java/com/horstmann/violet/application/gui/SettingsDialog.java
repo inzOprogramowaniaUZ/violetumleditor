@@ -10,12 +10,6 @@ import com.horstmann.violet.framework.injection.bean.ManiocFramework.BeanInjecto
 import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
 import com.horstmann.violet.framework.injection.resources.annotation.ResourceBundleBean;
 
-/**
- * Violet's settings dialog
- * 
- * @author Marta Mrugalska
- */
-
 public class SettingsDialog extends javax.swing.JDialog
 {
 
