@@ -272,8 +272,9 @@ public class EditMenu extends JMenu
 		{
 			public void actionPerformed(ActionEvent event)
 			{
-				JDialog settingsDialog = new SettingsDialog(mainFrame, true);
+				JDialog settingsDialog = new SettingsDialog(mainFrame, true,mainFrame);
 				settingsDialog.setLocationRelativeTo(mainFrame);
+				settingsDialog.setAlwaysOnTop(false);
 				settingsDialog.setVisible(true);
 			}
 		});

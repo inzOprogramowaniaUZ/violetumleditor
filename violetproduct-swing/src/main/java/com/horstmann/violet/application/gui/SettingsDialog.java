@@ -5,6 +5,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import com.horstmann.violet.application.autosave.AutosaveSettings;
+import com.horstmann.violet.application.autosave.IAutoSave;
 import com.horstmann.violet.framework.injection.bean.ManiocFramework.BeanInjector;
 import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
 import com.horstmann.violet.framework.injection.resources.annotation.ResourceBundleBean;
@@ -59,12 +60,16 @@ public class SettingsDialog extends javax.swing.JDialog {
     @ResourceBundleBean(key="dialog.titleText")
     private String titleText;
     
+    
+	private IAutoSave autosaveListener;
+    
     /**
      * Settings dialogue
      * @param parent and modal
      */
-    public SettingsDialog(java.awt.Frame parent, boolean modal) {
+    public SettingsDialog(java.awt.Frame parent, boolean modal, IAutoSave autosaveListener) {
         super(parent, modal);
+        this.autosaveListener = autosaveListener;
         autosave = new AutosaveSettings();
         ResourceBundleInjector.getInjector().inject(this);
         BeanInjector.getInjector().inject(this);
@@ -250,6 +255,9 @@ public class SettingsDialog extends javax.swing.JDialog {
         if (validationIsOK()) {
         	saveSettings();
             autosave.saveSettings();
+            if (this.autosaveListener != null) {
+            	this.autosaveListener.reloadSettings();
+            }
             dispose();
         }
     }

@@ -38,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.horstmann.violet.application.autosave.AutoSave;
+import com.horstmann.violet.application.autosave.IAutoSave;
 import com.horstmann.violet.application.help.AboutDialog;
 import com.horstmann.violet.application.menu.MenuFactory;
 import com.horstmann.violet.framework.dialog.DialogFactory;
@@ -67,7 +68,7 @@ import com.horstmann.violet.workspace.WorkspacePanel;
  * @author Alexandre de Pellegrin
  */
 @ResourceBundleBean(resourceReference = AboutDialog.class)
-public class MainFrame extends JFrame
+public class MainFrame extends JFrame implements IAutoSave
 {
     /**
      * Constructs a blank frame with a desktop pane but no graph windows.
@@ -126,7 +127,7 @@ public class MainFrame extends JFrame
     
     private void startAutoSave()
     {
-    	new AutoSave(this);
+    	this.autoSave = new AutoSave(this);
     }
 
 
@@ -337,6 +338,8 @@ public class MainFrame extends JFrame
     
     @ResourceBundleBean(key="app.icon")
     private Image applicationIcon;
+    
+    private AutoSave autoSave;
 
     /**
      * All disgram workspaces
@@ -368,4 +371,8 @@ public class MainFrame extends JFrame
             }
         }
     }
+	@Override
+	public void reloadSettings() {
+		this.autoSave.reloadSettings();
+	}
 }
