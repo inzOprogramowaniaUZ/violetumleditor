@@ -1,16 +1,13 @@
 package com.horstmann.violet.framework.util;
 
-public class MementoCaretaker<T>
-{
+public class MementoCaretaker<T>{
     private T state;
 
-    public void save(T memento)
-    {
+    public void save(T memento){
         state = memento;
     }
 
-    public T load()
-    {
+    public T load(){
         return state;
     }
 }
