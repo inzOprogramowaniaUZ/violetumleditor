@@ -66,7 +66,7 @@ public class ComponentDiagramGraph extends AbstractGraph
      * Adds Edge Elements
      */
     private static final List<IEdge> EDGE_PROTOTYPES = new ArrayList<IEdge>(Arrays.asList(
-                    new DependencyEdge(),
+            new DependencyEdge(),
             new InterfaceInheritanceEdge(),
             new NoteEdge()
     ));
