@@ -40,7 +40,8 @@ import java.util.List;
 /**
  * A UML component diagram.
  */
-public class ComponentDiagramGraph extends AbstractGraph {
+public class ComponentDiagramGraph extends AbstractGraph
+{
     public List<INode> getNodePrototypes()
     {
         return NODE_PROTOTYPES;
@@ -65,7 +66,7 @@ public class ComponentDiagramGraph extends AbstractGraph {
      * Adds Edge Elements
      */
     private static final List<IEdge> EDGE_PROTOTYPES = new ArrayList<IEdge>(Arrays.asList(
-            new DependencyEdge(),
+                    new DependencyEdge(),
             new InterfaceInheritanceEdge(),
             new NoteEdge()
     ));
