@@ -26,15 +26,11 @@ public class AutoSave implements ActionListener
     public AutoSave(MainFrame mainFrame)
     {
 		BeanInjector.getInjector().inject(this);
-		AutosaveSettings settings = new AutosaveSettings();
+        AutosaveSettings settings = new AutosaveSettings();
+        if (settings.isEnableAutosave()) {
+            loadSettings();
 
-		if (settings.isEnableAutosave())
-		{
-			saveInterval = settings.getAutosaveInterval();
-			autoSaveDirectory = settings.getAutosavePath();
-			autoSaveEnabled = settings.isEnableAutosave();
-
-			if (mainFrame != null)
+		if (mainFrame != null)
 			{
 				this.mainFrame = mainFrame;
 				if (createVioletDirectory())
@@ -43,7 +39,7 @@ public class AutoSave implements ActionListener
 					initializeTimer();
 				}
 			}
-		}
+        }
 	}
 
     public String getAutoSaveDirectory()
@@ -124,5 +120,32 @@ public class AutoSave implements ActionListener
             }
         }
     }
+    
+    public void reloadSettings() {
+    	loadSettings();
+    	if (mainFrame != null) {
+			for (IWorkspace workspace : mainFrame.getWorkspaceList())
+	        {
+	            IGraphFile graphFile = workspace.getGraphFile();
+	            graphFile.autoSaveSettingsWasChanged();
+	        }
+    	}
+    }
+        
+	private void loadSettings() {
+		AutosaveSettings settings = new AutosaveSettings();
+		if (settings.isEnableAutosave()) {
+			saveInterval = settings.getAutosaveInterval();
+			autoSaveDirectory = settings.getAutosavePath();
+
+			initializeTimer();
+		} else {
+			if (saveTimer != null) {
+				saveTimer.stop();
+				saveTimer = null;
+			}
+		}
+		
+	}
 
 }
