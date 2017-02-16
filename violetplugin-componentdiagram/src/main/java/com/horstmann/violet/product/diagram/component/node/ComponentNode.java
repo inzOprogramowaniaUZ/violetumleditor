@@ -191,7 +191,7 @@ public class ComponentNode extends ColorableNode
     }
 
     /**
-     * Gets connection point.
+     * Gets the connection point.
      */
     @Override
     public Point2D getConnectionPoint(IEdge edge)
@@ -225,17 +225,10 @@ public class ComponentNode extends ColorableNode
         return result;
     }
 
-    /**
-     * Sets the text property value.
-     */
     public void setText(LineText newValue)
     {
         text.setText(newValue.toEdit());
     }
-
-    /**
-     * Gets the text property value.
-     */
     public LineText getText()
     {
         return text;
