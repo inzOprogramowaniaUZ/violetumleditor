@@ -1,7 +1,6 @@
 package com.horstmann.violet.framework.util;
 
-public class ThreeStringMemento
-{
+public class ThreeStringMemento {
     private final String firstValue;
     private final String secondValue;
     private final String thirdValue;
@@ -13,8 +12,7 @@ public class ThreeStringMemento
         thirdValue = third;
     }
 
-    public ThreeStringMemento(String first, String second)
-    {
+    public ThreeStringMemento(String first, String second) {
         firstValue = first;
         secondValue = second;
         thirdValue = null;
