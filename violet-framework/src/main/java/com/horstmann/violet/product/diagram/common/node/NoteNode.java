@@ -138,17 +138,17 @@ public class NoteNode extends ColorableNode implements IRevertableProperties
         return ResourceBundleConstant.NODE_AND_EDGE_RESOURCE.getString("note_node.tooltip");
     }
 
-
+    @Override
     public LineText getName() {
         return text;
     }
 
-
+    @Override
     public LineText getAttributes() {
         return null;
     }
 
-
+    @Override
     public LineText getMethods() {
         return null;
 }
