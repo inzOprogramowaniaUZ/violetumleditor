@@ -35,7 +35,7 @@ public class AddNodeBehavior extends AbstractEditorPartBehavior implements IGrap
     }
     
     @Override
-    public void onMouseClicked(MouseEvent event)
+    public void onMousePressed(MouseEvent event)
     {
     	this.draggedNode = null;
     	
@@ -43,6 +43,7 @@ public class AddNodeBehavior extends AbstractEditorPartBehavior implements IGrap
         {
             return;
         }
+        
         if (event.getButton() != MouseEvent.BUTTON1) {
             return;
         }
