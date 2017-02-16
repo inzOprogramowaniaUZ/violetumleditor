@@ -192,7 +192,7 @@ public class MainFrame extends JFrame implements IAutoSave
     private void startAutoSave()
     {
     	this.autoSave = new AutoSave(this);
-        new AutoSave(this);
+        
 
     }
 
