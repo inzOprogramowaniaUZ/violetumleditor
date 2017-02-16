@@ -173,7 +173,6 @@ public class ActorNode extends ColorableNode implements IRevertableProperties
     public void setName(SingleLineText newValue)
     {
         name.setText(newValue.toEdit());
-//        getContent().refresh();
     }
 
     private final MementoCaretaker<OneStringMemento> caretaker = new MementoCaretaker<OneStringMemento>();
