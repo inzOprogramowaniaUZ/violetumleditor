@@ -80,7 +80,13 @@ public class GraphFile implements IGraphFile
         {
             throw new IOException("Open file action cancelled by user");
         }
-
+	InputStream in = fileOpener.getInputStream();
+        if (in != null)
+        {
+			this.graph = this.filePersistenceService.read(in);
+	
+       }
+        else
         InputStream inputStream = fileReader.getInputStream();
         if (inputStream == null)
 
