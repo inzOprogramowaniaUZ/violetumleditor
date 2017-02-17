@@ -157,7 +157,7 @@ public class GraphFile implements IGraphFile
 		try {
 
 			if (this.autoSaveFileName == null) {
-					this.autoSaveFileName = (this.currentFilename == null ? java.util.UUID.randomUUID().toString() : this.currentFilename) + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".html";
+					this.autoSaveFileName =  new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".html";
 				}
 			
 				if ((autoSaveFile == null) || ((autoSaveFile != null) && (!autoSaveFile.getAbsolutePath().contains(fileDirectory) == false))) {
