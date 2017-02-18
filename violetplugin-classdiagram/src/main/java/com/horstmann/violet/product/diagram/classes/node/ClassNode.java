@@ -7,21 +7,27 @@ import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.framework.util.ThreeStringMemento;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
+import com.horstmann.violet.product.diagram.abstracts.node.IRenameableNode;
 import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
-import com.horstmann.violet.product.diagram.common.node.ColorableNode;
+import com.horstmann.violet.product.diagram.common.node.ColorableNodeWithMethodsInfo;
 import com.horstmann.violet.product.diagram.property.text.LineText;
-import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;import com.horstmann.violet.product.diagram.property.text.MultiLineText;
+import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;
+import com.horstmann.violet.product.diagram.property.text.MultiLineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 import com.horstmann.violet.product.diagram.property.text.decorator.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends ColorableNode implements INamedNode, IRevertableProperties
+public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNode, IRevertableProperties, IRenameableNode
 {
 
     public static boolean classNameChange = false;
@@ -162,6 +168,12 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         methods.setText(memento.getThirdValue());
     }
 
+    @Override
+    public void replaceNodeOccurrences(String oldValue, String newValue) {
+        super.replaceNodeOccurrences(oldValue, newValue);
+        replaceNodeOccurrencesInAttributes(oldValue, newValue);
+    }
+
     /**
      * Sets the stereotype property value.
      *
@@ -192,9 +204,9 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             toBigLetter(getName());
         }
         else
-            {
+        {
             name.setText(newValue);
-            }
+        }
     }
 
     /**
@@ -207,16 +219,6 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         String newName = newValue.toString().substring(0, 1).toUpperCase()
                          + getName().toString().substring(1);
         name.setText(newName);
-    }
-
-    /**
-     * Gets the name property value.
-     *
-     * @return the class name
-     */
-    public LineText getName()
-    {
-        return name;
     }
 
     /**
@@ -260,6 +262,50 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     }
 
     /**
+     * Replaces class name occurrences in attributes
+     * @param oldValue old class name
+     * @param newValue new class name
+     */
+    private void replaceNodeOccurrencesInAttributes(String oldValue, String newValue)
+    {
+        if (!getAttributes().toString().isEmpty()) {
+            MultiLineText renamedAttributes = new MultiLineText();
+            renamedAttributes.setText(renameAttributes(oldValue, newValue));
+            setAttributes(renamedAttributes);
+        }
+    }
+
+    /**
+     * Finds all of oldValue class occurrences in attributes and replaces it with newValue
+     * @param oldValue old class name
+     * @param newValue new class name
+     * @return attributes with renamed classes
+     */
+    private String renameAttributes(String oldValue, String newValue) {
+        ArrayList<String> attributes = new ArrayList<String>(Arrays.asList(getAttributes().toEdit().split("\n")));
+        StringBuilder renamedAttributes = new StringBuilder();
+        Pattern pattern = Pattern.compile(".*:\\s*(" + oldValue + ")\\s*$");
+
+        Iterator<String> iterator = attributes.iterator();
+        while(iterator.hasNext()) {
+            String attribute = iterator.next();
+            StringBuffer attributeToRename = new StringBuffer(attribute);
+            Matcher matcher = pattern.matcher(attribute);
+            renamedAttributes.append(
+                    (matcher.matches()
+                            ? attributeToRename.replace(matcher.start(1), matcher.end(1), newValue)
+                            : attribute)
+            );
+
+            if(iterator.hasNext()) {
+                renamedAttributes.append("\n");
+            }
+        }
+
+        return renamedAttributes.toString();
+    }
+
+    /**
      * Sets the methods property value.
      *
      * @param newValue the methods of this class
@@ -282,16 +328,15 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     private SingleLineText stereotype;
     private SingleLineText name;
     private MultiLineText attributes;
-    private MultiLineText methods;
     private MultiLineText comment;
 
     private transient Separator separator;
 
     private static final int MIN_NAME_HEIGHT = 45;
     private static final int MIN_WIDTH = 100;
-    private static final String STATIC = "<<static>>";
     private static final String ABSTRACT = "«abstract»";
     private static final String HIDE= "hide ";
+
     private static final String[][] SIGNATURE_REPLACE_KEYS = {
             { "public ", "+ " },
             { "package ", "~ " },
@@ -397,6 +442,4 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             return lineString;
         }
     };
-
-
 }
