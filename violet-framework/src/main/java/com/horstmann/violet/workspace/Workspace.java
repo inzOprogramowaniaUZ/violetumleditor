@@ -142,7 +142,6 @@ public class Workspace implements IWorkspace
                     initEditorPart();
                 }
             }
-            behaviorManager.addBehavior(new SelectSelectToolBehavior(this.getSideBar().getGraphToolsBar()));
         }
         return this.graphEditor;
     }
@@ -176,7 +175,7 @@ public class Workspace implements IWorkspace
         behaviorManager.addBehavior(new SwingRepaintingBehavior(this.graphEditor));
         behaviorManager.addBehavior(new ColorizeBehavior(this, colorChoiceBar));
         behaviorManager.addBehavior(new FindBehavior(this.graphEditor));
-		behaviorManager.addBehavior(new SelectSelectTool(graphToolsBar));
+		behaviorManager.addBehavior(new SelectSelectToolBehavior(graphToolsBar));
     }
 
     @Override
