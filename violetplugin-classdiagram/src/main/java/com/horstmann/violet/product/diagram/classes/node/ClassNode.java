@@ -32,6 +32,7 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     {
         super();
         name = new SingleLineText(NAME_CONVERTER);
+        stereotype = new SingleLineText(STEREOTYPE_CONVERTER);
         name.setAlignment(LineText.CENTER);
         attributes = new MultiLineText(PROPERTY_CONVERTER);
         methods = new MultiLineText(PROPERTY_CONVERTER);
@@ -42,6 +43,7 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     protected ClassNode(ClassNode node) throws CloneNotSupportedException
     {
         super(node);
+        stereotype = node.stereotype.clone();
         name = node.name.clone();
         attributes = node.attributes.clone();
         methods = node.methods.clone();
@@ -54,6 +56,9 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     {
         super.beforeReconstruction();
 
+        if (null == stereotype) {
+            stereotype = new SingleLineText();
+        }
         if(null == name)
         {
             name = new SingleLineText();
@@ -70,6 +75,7 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         {
             comment = new MultiLineText();
         }
+        stereotype.reconstruction(STEREOTYPE_CONVERTER);
         name.reconstruction(NAME_CONVERTER);
         attributes.reconstruction(PROPERTY_CONVERTER);
         methods.reconstruction(PROPERTY_CONVERTER);
@@ -86,13 +92,16 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     @Override
     protected void createContentStructure()
     {
+        TextContent stereotypeContent = new TextContent(stereotype);
         TextContent nameContent = new TextContent(name);
         nameContent.setMinHeight(MIN_NAME_HEIGHT);
         nameContent.setMinWidth(MIN_WIDTH);
         TextContent attributesContent = new TextContent(attributes);
         TextContent methodsContent = new TextContent(methods);
         TextContent commentContent = new TextContent(comment);
+
         VerticalLayout verticalGroupContent = new VerticalLayout();
+        verticalGroupContent.add(stereotypeContent);
         verticalGroupContent.add(nameContent);
         verticalGroupContent.add(attributesContent);
         verticalGroupContent.add(methodsContent);
@@ -121,6 +130,7 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     @Override
     public void setTextColor(Color textColor)
     {
+        stereotype.setTextColor(textColor);
         name.setTextColor(textColor);
         attributes.setTextColor(textColor);
         methods.setTextColor(textColor);
@@ -150,6 +160,24 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         name.setText(memento.getFirstValue());
         attributes.setText(memento.getSecondValue());
         methods.setText(memento.getThirdValue());
+    }
+
+    /**
+     * Sets the stereotype property value.
+     *
+     * @param newValue the class name
+     */
+    public void setStereotype(LineText newValue) {
+        stereotype.setText(newValue);
+    }
+
+    /**
+     * Gets the stereotype property value.
+     *
+     * @return the class name
+     */
+    public LineText getStereotype() {
+        return stereotype;
     }
 
     /**
@@ -251,6 +279,7 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         return comment;
     }
 
+    private SingleLineText stereotype;
     private SingleLineText name;
     private MultiLineText attributes;
     private MultiLineText methods;
@@ -286,32 +315,64 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             HIDE
     );
 
-    private static final LineText.Converter NAME_CONVERTER = new LineText.Converter()
-    {
+    /**
+     * converts the stereotype from plain text to one that may contain decorators
+     * @param text class stereotype
+     */
+
+
+
+    private static boolean containsLettersOnly(String text) {
+        char[] chars = text.toCharArray();
+
+        for (char c : chars) {
+            if(!Character.isLetter(c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    private static final LineText.Converter STEREOTYPE_CONVERTER = new LineText.Converter() {
         @Override
-        public OneLineText toLineString(String text)
-        {
+        public OneLineText toLineString(String text) {
+            OneLineText controlText = null;
+            char[] textCharTable = text.toCharArray();
+
+            if (!containsLettersOnly(text)) {
+
+            }
+            else if (textCharTable[0]=='«' || text.equals("")) {
+                controlText = new OneLineText(text);
+            } else {
+                String withBrackets = new String("«"+ text + "»");
+                controlText = new OneLineText(withBrackets);
+            }
+
+            OneLineText lineString=new SmallSizeDecorator(controlText);
+
+            return lineString;
+        }
+    };
+
+    /**
+     * converts class name from plain text to one that may contain decorators
+     * @param text class name
+     */
+    private static final LineText.Converter NAME_CONVERTER = new LineText.Converter() {
+        @Override
+        public OneLineText toLineString(String text) {
             OneLineText controlText = new OneLineText(text);
             OneLineText lineString = new LargeSizeDecorator(controlText);
 
-            if(controlText.contains(ABSTRACT))
-            {
+            if (controlText.contains(ABSTRACT)) {
                 lineString = new ItalicsDecorator(lineString);
-            }
-
-            for(String stereotype : STEREOTYPES)
-            {
-                if(controlText.contains(stereotype))
-                {
-                    lineString = new PrefixDecorator(new RemoveSentenceDecorator(
-                            lineString, stereotype), String.format("<center>%s</center>", stereotype)
-                    );
-                }
             }
 
             return lineString;
         }
     };
+
     private static final LineText.Converter PROPERTY_CONVERTER = new LineText.Converter()
     {
         @Override
