@@ -36,6 +36,7 @@ import com.horstmann.violet.product.diagram.abstracts.Direction;
 import com.horstmann.violet.product.diagram.abstracts.edge.ShapeEdge;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.property.ArrowheadChoiceList;
+import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 import com.horstmann.violet.product.diagram.state.StateDiagramConstant;
 
@@ -63,6 +64,21 @@ public class StateTransitionEdge extends ShapeEdge
     public String getToolTip()
     {
         return StateDiagramConstant.STATE_DIAGRAM_RESOURCE.getString("tooltip.state_edge");
+    }
+
+    @Override
+    public LineText getStartLabel() {
+        return null;
+    }
+
+    @Override
+    public LineText getCenterLabel() {
+        return null;
+    }
+
+    @Override
+    public LineText getEndLabel() {
+        return null;
     }
 
     /**
@@ -110,18 +126,21 @@ public class StateTransitionEdge extends ShapeEdge
 
     /**
      * Gets the bounds of the label text
-     * 
-     * @param g2 the graphics context
+     *
      * @return the bounds of the label text
      */
     private Rectangle2D getLabelBounds()
     {
         BufferedImage dummy = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        // need a dummy image to get a Graphics to
-        // measure the size
         Graphics2D g2 = (Graphics2D) dummy.getGraphics();
-        
-        label.setText("<html>" + labelText + "</html>");
+
+        try {
+            label.setText("<html>" + labelText + "</html>");
+        }
+        catch (NullPointerException ex)
+        {
+            //throw ex;
+        }
         label.setFont(g2.getFont());
         Dimension d = label.getPreferredSize();
         label.setBounds(0, 0, d.width, d.height);

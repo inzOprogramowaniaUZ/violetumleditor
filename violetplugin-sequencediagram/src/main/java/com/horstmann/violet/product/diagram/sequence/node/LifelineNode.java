@@ -21,31 +21,37 @@
 
 package com.horstmann.violet.product.diagram.sequence.node;
 
+
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
+import com.horstmann.violet.framework.util.LifelineNodeMemento;
+import com.horstmann.violet.framework.util.MementoCaretaker;
+import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
 import com.horstmann.violet.product.diagram.abstracts.node.AbstractNode;
+import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.property.ArrowheadChoiceList;
 import com.horstmann.violet.product.diagram.property.text.LineText;
-import com.horstmann.violet.product.diagram.property.text.decorator.*;
-import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
-import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
+import com.horstmann.violet.product.diagram.property.text.decorator.LargeSizeDecorator;
+import com.horstmann.violet.product.diagram.property.text.decorator.OneLineText;
+import com.horstmann.violet.product.diagram.property.text.decorator.PrefixDecorator;
+import com.horstmann.violet.product.diagram.property.text.decorator.RemoveSentenceDecorator;
 import com.horstmann.violet.product.diagram.sequence.SequenceDiagramConstant;
 import com.horstmann.violet.product.diagram.sequence.edge.CallEdge;
-
 /**
  * An object node_old in a scenario diagram.
  *
  * @author Adrian Bobrowski <adrian071993@gmail.com>
  */
-public class LifelineNode extends ColorableNode
+public class LifelineNode extends ColorableNode implements IRevertableProperties
 {
     /**
      * Construct an object node_old with a default size
@@ -367,6 +373,16 @@ public class LifelineNode extends ColorableNode
         return name;
     }
 
+    @Override
+    public LineText getAttributes() {
+        return type;
+    }
+
+    @Override
+    public LineText getMethods() {
+        return null;
+    }
+
     /**
      * Sets the type property value.
      *
@@ -406,6 +422,24 @@ public class LifelineNode extends ColorableNode
     public boolean isEndOfLife()
     {
         return endOfLife;
+    }
+
+    private final MementoCaretaker<LifelineNodeMemento> caretaker = new MementoCaretaker<LifelineNodeMemento>();
+
+    @Override
+    public void beforeUpdate()
+    {
+        caretaker.save(new LifelineNodeMemento(name.toString(), type.toString(), endOfLife));
+    }
+
+    @Override
+    public void revertUpdate()
+    {
+        LifelineNodeMemento memento = caretaker.load();
+
+        name.setText(memento.getFirstValue());
+        type.setText(memento.getSecondValue());
+        endOfLife = memento.getThirdValue();
     }
 
     private SingleLineText name;
