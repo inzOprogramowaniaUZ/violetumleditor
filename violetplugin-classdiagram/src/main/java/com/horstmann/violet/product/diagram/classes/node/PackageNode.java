@@ -1,26 +1,29 @@
 package com.horstmann.violet.product.diagram.classes.node;
 
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
-
 import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideCustomShape;
+import com.horstmann.violet.framework.util.MementoCaretaker;
+import com.horstmann.violet.framework.util.ThreeStringMemento;
 import com.horstmann.violet.product.diagram.abstracts.Direction;
 import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
 import com.horstmann.violet.product.diagram.abstracts.node.AbstractNode;
+import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
+import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
 import com.horstmann.violet.product.diagram.property.text.MultiLineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 
+import java.awt.*;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
+
 /**
  * A package node in a class diagram.
  */
-public class PackageNode extends ColorableNode
+public class PackageNode extends ColorableNode implements IRevertableProperties
 {
     public PackageNode()
     {
@@ -227,6 +230,16 @@ public class PackageNode extends ColorableNode
         return name;
     }
 
+    @Override
+    public LineText getAttributes() {
+        return context;
+    }
+
+    @Override
+    public LineText getMethods() {
+        return null;
+    }
+
     /**
      * Sets the contents property value.
      * 
@@ -245,6 +258,23 @@ public class PackageNode extends ColorableNode
     public LineText getContext()
     {
         return context;
+    }
+
+    private final MementoCaretaker<ThreeStringMemento> caretaker = new MementoCaretaker<ThreeStringMemento>();
+
+    @Override
+    public void beforeUpdate()
+    {
+        caretaker.save(new ThreeStringMemento(name.toString(), context.toString()));
+    }
+
+    @Override
+    public void revertUpdate()
+    {
+        ThreeStringMemento memento = caretaker.load();
+
+        name.setText(memento.getFirstValue());
+        context.setText(memento.getSecondValue());
     }
 
     private SingleLineText name;
