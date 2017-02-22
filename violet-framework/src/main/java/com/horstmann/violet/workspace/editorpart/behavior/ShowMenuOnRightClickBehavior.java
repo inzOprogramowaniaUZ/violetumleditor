@@ -20,7 +20,39 @@ import com.horstmann.violet.workspace.editorpart.IEditorPartSelectionHandler;
 
 public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
 {
+    private JPopupMenu popupMenu;
+    
+    private IGraph graph;
+    
+    private IEditorPartSelectionHandler selectionHandler;
+    
+    @ResourceBundleBean(key = "edit.undo")
+    private JMenuItem undo;
+    
+    @ResourceBundleBean(key = "edit.redo")
+    private JMenuItem redo;
 
+    @ResourceBundleBean(key = "edit.properties")
+    private JMenuItem properties;
+
+    @ResourceBundleBean(key = "edit.cut")
+    private JMenuItem cut;
+
+    @ResourceBundleBean(key = "edit.copy")
+    private JMenuItem copy;
+
+    @ResourceBundleBean(key = "edit.paste")
+    private JMenuItem paste;
+
+    @ResourceBundleBean(key = "edit.delete")
+    private JMenuItem delete;
+
+    @ResourceBundleBean(key = "edit.select_all")
+    private JMenuItem selectAll;
+    
+    private IEditorPart editorPart;
+
+    
     public ShowMenuOnRightClickBehavior(IEditorPart editorPart)
     {
         ResourceBundleInjector.getInjector().inject(this);
@@ -183,38 +215,4 @@ public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
         
         return aPopupMenu;
     }
-    
-    private JPopupMenu popupMenu; 
-    
-    private IGraph graph;
-
-    private IEditorPartSelectionHandler selectionHandler;
-    
-    @ResourceBundleBean(key = "edit.undo")
-    private JMenuItem undo;
-
-    @ResourceBundleBean(key = "edit.redo")
-    private JMenuItem redo;
-
-    @ResourceBundleBean(key = "edit.properties")
-    private JMenuItem properties;
-
-    @ResourceBundleBean(key = "edit.cut")
-    private JMenuItem cut;
-
-    @ResourceBundleBean(key = "edit.copy")
-    private JMenuItem copy;
-
-    @ResourceBundleBean(key = "edit.paste")
-    private JMenuItem paste;
-
-    @ResourceBundleBean(key = "edit.delete")
-    private JMenuItem delete;
-
-    @ResourceBundleBean(key = "edit.select_all")
-    private JMenuItem selectAll;
-    
-    private IEditorPart editorPart;
-
-  
 }
