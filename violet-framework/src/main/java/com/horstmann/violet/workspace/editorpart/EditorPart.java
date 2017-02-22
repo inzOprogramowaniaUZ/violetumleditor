@@ -147,7 +147,7 @@ public class EditorPart extends JPanel implements IEditorPart
     private boolean isUserConfirmedElementsDeletion()
     {
     	int reply = JOptionPane.showConfirmDialog(null, deleteDialogText, null, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-    	return reply == JOptionPane.YES_NO_OPTION ? true : false;
+    	return reply == JOptionPane.YES_NO_OPTION;
     }
     
     public List<INode> getSelectedNodes()
