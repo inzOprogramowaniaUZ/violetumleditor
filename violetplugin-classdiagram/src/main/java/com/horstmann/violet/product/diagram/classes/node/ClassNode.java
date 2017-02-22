@@ -360,13 +360,6 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
             HIDE
     );
 
-    /**
-     * converts the stereotype from plain text to one that may contain decorators
-     * @param text class stereotype
-     */
-
-
-
     private static boolean containsLettersOnly(String text) {
         char[] chars = text.toCharArray();
 
@@ -378,6 +371,11 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
 
         return true;
     }
+
+    /**
+     * converts the stereotype from plain text to one that may contain decorators
+     * @param text class stereotype
+     */
     private static final LineText.Converter STEREOTYPE_CONVERTER = new LineText.Converter() {
         @Override
         public OneLineText toLineString(String text) {
@@ -387,10 +385,10 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
             if (!containsLettersOnly(text)) {
 
             }
-            else if (textCharTable[0]=='«' || text.equals("")) {
+            else if (textCharTable[0]==u/00AB || text.equals("")) {
                 controlText = new OneLineText(text);
             } else {
-                String withBrackets = new String("«"+ text + "»");
+                String withBrackets = new String(u/00AB+ text + u/00BB);
                 controlText = new OneLineText(withBrackets);
             }
 
