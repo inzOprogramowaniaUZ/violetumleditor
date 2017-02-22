@@ -1,5 +1,10 @@
 package com.horstmann.violet.product.diagram.classes.node;
 
+import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+
 import com.horstmann.violet.framework.graphics.Separator;
 import com.horstmann.violet.framework.graphics.content.*;
 import com.horstmann.violet.framework.graphics.shape.ContentInsideRectangle;
@@ -7,21 +12,28 @@ import com.horstmann.violet.framework.dialog.IRevertableProperties;
 import com.horstmann.violet.framework.util.MementoCaretaker;
 import com.horstmann.violet.framework.util.ThreeStringMemento;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
+import com.horstmann.violet.product.diagram.abstracts.node.IRenameableNode;
+import com.horstmann.violet.product.diagram.abstracts.node.ISwitchableNode;
 import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
-import com.horstmann.violet.product.diagram.common.node.ColorableNode;
+import com.horstmann.violet.product.diagram.common.node.ColorableNodeWithMethodsInfo;
 import com.horstmann.violet.product.diagram.property.text.LineText;
-import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;import com.horstmann.violet.product.diagram.property.text.MultiLineText;
+import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;
+import com.horstmann.violet.product.diagram.property.text.MultiLineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 import com.horstmann.violet.product.diagram.property.text.decorator.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends ColorableNode implements INamedNode, IRevertableProperties
+public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNode, IRevertableProperties, IRenameableNode, ISwitchableNode
 {
 
     public static boolean classNameChange = false;
@@ -47,6 +59,21 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         methods = node.methods.clone();
         comment=node.comment.clone();
         createContentStructure();
+    }
+    
+    /**
+     * Construct an class node from interface node
+     * @param the interface node
+     * @throws CloneNotSupportedException 
+     */
+    public ClassNode(InterfaceNode node) throws CloneNotSupportedException
+    {
+        super(node);
+        name = (SingleLineText) node.getName().clone();
+        name.reconstruction(NAME_CONVERTER);
+        attributes = new MultiLineText();
+        methods = (MultiLineText) node.getMethods().clone();
+        comment = new MultiLineText();
     }
 
     @Override
@@ -89,14 +116,16 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         TextContent nameContent = new TextContent(name);
         nameContent.setMinHeight(MIN_NAME_HEIGHT);
         nameContent.setMinWidth(MIN_WIDTH);
-        TextContent attributesContent = new TextContent(attributes);
-        TextContent methodsContent = new TextContent(methods);
         TextContent commentContent = new TextContent(comment);
         VerticalLayout verticalGroupContent = new VerticalLayout();
         verticalGroupContent.add(nameContent);
-        verticalGroupContent.add(attributesContent);
-        verticalGroupContent.add(methodsContent);
-        verticalGroupContent.add(commentContent);
+		if (VISIBLE_METHODS_AND_ATRIBUTES == true) {
+			TextContent attributesContent = new TextContent(attributes);
+			TextContent methodsContent = new TextContent(methods);
+			verticalGroupContent.add(attributesContent);
+			verticalGroupContent.add(methodsContent);
+            verticalGroupContent.add(commentContent);
+		}
         separator = new Separator.LineSeparator(getBorderColor());
         verticalGroupContent.setSeparator(separator);
 
@@ -133,7 +162,18 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     {
         return ClassDiagramConstant.CLASS_DIAGRAM_RESOURCE.getString("tooltip.class_node");
     }
-
+    
+    /**
+     * Converts class node to interface node
+     */
+	@Override
+	public INode switchNode() {
+		try {
+			return new InterfaceNode(this);
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
+	}
 
     private final MementoCaretaker<ThreeStringMemento> caretaker = new MementoCaretaker<ThreeStringMemento>();
 
@@ -147,9 +187,25 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     {
         ThreeStringMemento memento = caretaker.load();
 
-        attributes.setText(memento.getFirstValue());
-        name.setText(memento.getSecondValue());
+        name.setText(memento.getFirstValue());
+        attributes.setText(memento.getSecondValue());
         methods.setText(memento.getThirdValue());
+    }
+    
+	/**
+	 * Edit visible boolean parameter to opposite value.
+	 * And refers structure.
+	 */
+	@Override
+	public void switchVisible() {
+		VISIBLE_METHODS_AND_ATRIBUTES = !VISIBLE_METHODS_AND_ATRIBUTES;
+		createContentStructure();
+	}
+
+    @Override
+    public void replaceNodeOccurrences(String oldValue, String newValue) {
+        super.replaceNodeOccurrences(oldValue, newValue);
+        replaceNodeOccurrencesInAttributes(oldValue, newValue);
     }
 
     /**
@@ -164,9 +220,9 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             toBigLetter(getName());
         }
         else
-            {
+        {
             name.setText(newValue);
-            }
+        }
     }
 
     /**
@@ -179,16 +235,6 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         String newName = newValue.toString().substring(0, 1).toUpperCase()
                          + getName().toString().substring(1);
         name.setText(newName);
-    }
-
-    /**
-     * Gets the name property value.
-     *
-     * @return the class name
-     */
-    public LineText getName()
-    {
-        return name;
     }
 
     /**
@@ -232,6 +278,50 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     }
 
     /**
+     * Replaces class name occurrences in attributes
+     * @param oldValue old class name
+     * @param newValue new class name
+     */
+    private void replaceNodeOccurrencesInAttributes(String oldValue, String newValue)
+    {
+        if (!getAttributes().toString().isEmpty()) {
+            MultiLineText renamedAttributes = new MultiLineText();
+            renamedAttributes.setText(renameAttributes(oldValue, newValue));
+            setAttributes(renamedAttributes);
+        }
+    }
+
+    /**
+     * Finds all of oldValue class occurrences in attributes and replaces it with newValue
+     * @param oldValue old class name
+     * @param newValue new class name
+     * @return attributes with renamed classes
+     */
+    private String renameAttributes(String oldValue, String newValue) {
+        ArrayList<String> attributes = new ArrayList<String>(Arrays.asList(getAttributes().toEdit().split("\n")));
+        StringBuilder renamedAttributes = new StringBuilder();
+        Pattern pattern = Pattern.compile(".*:\\s*(" + oldValue + ")\\s*$");
+
+        Iterator<String> iterator = attributes.iterator();
+        while(iterator.hasNext()) {
+            String attribute = iterator.next();
+            StringBuffer attributeToRename = new StringBuffer(attribute);
+            Matcher matcher = pattern.matcher(attribute);
+            renamedAttributes.append(
+                    (matcher.matches()
+                            ? attributeToRename.replace(matcher.start(1), matcher.end(1), newValue)
+                            : attribute)
+            );
+
+            if(iterator.hasNext()) {
+                renamedAttributes.append("\n");
+            }
+        }
+
+        return renamedAttributes.toString();
+    }
+
+    /**
      * Sets the methods property value.
      *
      * @param newValue the methods of this class
@@ -251,18 +341,19 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         return comment;
     }
 
-    private SingleLineText name;
     private MultiLineText attributes;
-    private MultiLineText methods;
     private MultiLineText comment;
 
     private transient Separator separator;
 
     private static final int MIN_NAME_HEIGHT = 45;
     private static final int MIN_WIDTH = 100;
-    private static final String STATIC = "<<static>>";
-    private static final String ABSTRACT = "«abstract»";
+    private boolean VISIBLE_METHODS_AND_ATRIBUTES = true;
+    private static final String INTERFACE = "<center>\u00ABinterface\u00BB</center>";
+    private static final String STATIC = "\u00ABstatic\u00BB";
+    private static final String ABSTRACT = "\u00ABabstract\u00BB";
     private static final String HIDE= "hide ";
+
     private static final String[][] SIGNATURE_REPLACE_KEYS = {
             { "public ", "+ " },
             { "package ", "~ " },
@@ -273,15 +364,15 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
     };
 
     private static final List<String> STEREOTYPES = Arrays.asList(
-            "«Utility»",
-            "«Type»",
-            "«Metaclass»",
-            "«ImplementationClass»",
-            "«Focus»",
-            "«Entity»",
-            "«Control»",
-            "«Boundary»",
-            "«Auxiliary»",
+            "\u00ABUtility\u00BB",
+            "\u00ABType\u00BB",
+            "\u00ABMetaclass\u00BB",
+            "\u00ABImplementationClass\u00BB",
+            "\u00ABFocus\u00BB",
+            "\u00ABEntity\u00BB",
+            "\u00ABControl\u00BB",
+            "\u00ABBoundary\u00BB",
+            "\u00ABAuxiliary\u00BB",
             ABSTRACT,
             HIDE
     );
@@ -294,6 +385,11 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             OneLineText controlText = new OneLineText(text);
             OneLineText lineString = new LargeSizeDecorator(controlText);
 
+            if(controlText.contains(INTERFACE))
+            {
+                lineString = new RemoveSentenceDecorator(lineString, INTERFACE);
+            }
+            
             if(controlText.contains(ABSTRACT))
             {
                 lineString = new ItalicsDecorator(lineString);
@@ -312,6 +408,7 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             return lineString;
         }
     };
+
     private static final LineText.Converter PROPERTY_CONVERTER = new LineText.Converter()
     {
         @Override
@@ -336,6 +433,4 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             return lineString;
         }
     };
-
-
 }

@@ -1,6 +1,5 @@
 package com.horstmann.violet.application.gui;
 
-
 import com.horstmann.violet.application.autosave.AutoSave;
 import com.horstmann.violet.application.autosave.AutoSaveRecover;
 import com.horstmann.violet.framework.dialog.DialogFactory;
@@ -40,6 +39,7 @@ public class SplashFrame {
     private JButton btnRecentProject;
     private JButton btnOpenAutosaveProject;
 
+
     private JButton btnClassDiagram;
     private JButton btnComunicationDiagram;
     private JButton btnSequenceDiagram;
@@ -57,6 +57,7 @@ public class SplashFrame {
     private JFrame frame = new JFrame();
     private List<IDiagramPlugin> diagramPlugins;
     private int tableSize=3;
+
     /**
      * Constructs frame with 3 buttons to create/open or open recent project.
      *
@@ -100,12 +101,13 @@ public class SplashFrame {
         welcomePanel.add(btnOpenProject);
         welcomePanel.add(btnOpenRecent);
 
+
         if (AutoSave.isAutoSave) {
             welcomePanel.add(btnOpenAutosaveProject);
             tableSize=4;
         }
-
         welcomePanel.setLayout(new GridLayout(tableSize, 1));
+
 
         mainPanel.add(welcomePanel, "mainPanelView");
         mainPanel.add(openRecentPanel, "recentPanelView");

@@ -37,8 +37,8 @@ public class AutoSaveRecover extends JFrame
         this.mainFrame = mainFrame;
         loadAutoSaveFile();
     }
-
-       /**
+    
+    /**
      * Load autosave file
      */
     private void loadAutoSaveFile()
