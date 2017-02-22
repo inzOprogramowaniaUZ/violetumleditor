@@ -392,10 +392,8 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         @Override
         public OneLineText toLineString(String text) {
             OneLineText controlText = null;
-            char[] textCharTable = text.toCharArray();
-            char bracket = '\u00AB';
 
-            if (textCharTable[0]== bracket || text.equals("")) {
+            if (text.contains("\u00AB") || text.equals("")) {
                 controlText = new OneLineText(text);
             } else {
                 String withBrackets = new String("\u00AB"+ text + "\u00BB");
