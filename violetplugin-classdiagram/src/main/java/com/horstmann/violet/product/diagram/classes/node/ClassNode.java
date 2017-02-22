@@ -384,18 +384,6 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             HIDE
     );
 
-    private static boolean containsLettersOnly(String text) {
-        char[] chars = text.toCharArray();
-
-        for (char c : chars) {
-            if(!Character.isLetter(c)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     /**
      * converts the stereotype from plain text to one that may contain decorators
      * @param text class stereotype
@@ -407,9 +395,7 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
             char[] textCharTable = text.toCharArray();
             char bracket = '\u00AB';
 
-            if (!containsLettersOnly(text)) {
-
-            } else if (textCharTable[0]== bracket || text.equals("")) {
+            if (textCharTable[0]== bracket || text.equals("")) {
                 controlText = new OneLineText(text);
             } else {
                 String withBrackets = new String("\u00AB"+ text + "\u00BB");
