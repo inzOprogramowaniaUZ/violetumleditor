@@ -49,8 +49,28 @@ import com.horstmann.violet.workspace.editorpart.behavior.IEditorPartBehavior;
  */
 public class EditorPart extends JPanel implements IEditorPart
 {
+    private IGraph graph;
+    
+	private IGrid grid;
 	
-	private String deleteDialogText = "Delete selected elements?";
+	private double zoom;
+	
+	private IEditorPartSelectionHandler selectionHandler = new EditorPartSelectionHandler();
+	
+	private int lastWidth = 0;
+	
+	private int lastHeight = 0;
+	
+	/**
+	 * Scale factor used to grow drawing area
+     */
+	private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
+	
+	private IEditorPartBehaviorManager behaviorManager = new EditorPartBehaviorManager();
+	
+    private String deleteDialogText = "Delete selected elements?";
+    
+    
     /**
      * Default constructor
      * 
@@ -288,30 +308,4 @@ public class EditorPart extends JPanel implements IEditorPart
     {
         return this.behaviorManager;
     }
-
-    
-    
-
-    
-    private IGraph graph;
-
-    private IGrid grid;
-
-    private double zoom;
-
-    private IEditorPartSelectionHandler selectionHandler = new EditorPartSelectionHandler();
-    
-    private int lastWidth = 0;
-    
-    private int lastHeight = 0;
-
-    /**
-     * Scale factor used to grow drawing area
-     */
-    private static final double GROW_SCALE_FACTOR = Math.sqrt(2);
-
-    private IEditorPartBehaviorManager behaviorManager = new EditorPartBehaviorManager();
-    
-
-
 }
