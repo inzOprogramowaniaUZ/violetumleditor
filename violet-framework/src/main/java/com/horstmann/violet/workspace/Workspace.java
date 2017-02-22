@@ -136,6 +136,7 @@ public class Workspace implements IWorkspace
     {
         if (this.graphEditor == null)
         {
+
             synchronized (Workspace.class)
             {
                 if (this.graphEditor == null)
@@ -178,6 +179,7 @@ public class Workspace implements IWorkspace
         behaviorManager.addBehavior(new ColorizeBehavior(this, colorChoiceBar));
         behaviorManager.addBehavior(new FindBehavior(this.graphEditor));
         behaviorManager.addBehavior(new RenameBehavior(this.graphEditor.getGraph()));
+		behaviorManager.addBehavior(new SelectSelectToolBehavior(graphToolsBar));
     }
 
     @Override

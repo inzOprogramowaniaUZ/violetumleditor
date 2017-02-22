@@ -111,7 +111,6 @@ public class GraphToolsBarPanel extends JPanel
 
 
 
-
     public void selectNextButton()
     {
         int nextPos = 0;
@@ -146,7 +145,6 @@ public class GraphToolsBarPanel extends JPanel
 
 
 
-
     public void selectPreviousButton()
     {
         int previousPos = 0;
@@ -176,9 +174,6 @@ public class GraphToolsBarPanel extends JPanel
             return;
         }
     }
-
-
-
 
 
 
