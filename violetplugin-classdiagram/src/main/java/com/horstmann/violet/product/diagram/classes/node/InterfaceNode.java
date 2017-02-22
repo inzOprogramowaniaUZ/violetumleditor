@@ -48,7 +48,7 @@ public class InterfaceNode extends ColorableNodeWithMethodsInfo implements IName
     
     /**
      * Construct an interface node from class node
-     * @param the class node
+     * @param node the class node
      * @throws CloneNotSupportedException 
      */
     public InterfaceNode(ClassNode node) throws CloneNotSupportedException

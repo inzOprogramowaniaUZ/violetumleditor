@@ -35,9 +35,7 @@ import com.horstmann.violet.web.workspace.WorkspaceWidget;
 import com.horstmann.violet.workspace.IWorkspace;
 import com.horstmann.violet.workspace.Workspace;
 
-import eu.webtoolkit.jwt.WApplication;
-import eu.webtoolkit.jwt.WBootstrapTheme;
-import eu.webtoolkit.jwt.WContainerWidget;
+import eu.webtoolkit.jwt.WApplication;import eu.webtoolkit.jwt.WContainerWidget;
 import eu.webtoolkit.jwt.WEnvironment;
 import eu.webtoolkit.jwt.WLength;
 import eu.webtoolkit.jwt.WLink;
