@@ -14,10 +14,9 @@ import com.horstmann.violet.framework.util.ThreeStringMemento;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.abstracts.node.IRenameableNode;
 import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
-import com.horstmann.violet.product.diagram.common.node.ColorableNodeWithMethodsInfo;
+import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
-import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;
-import com.horstmann.violet.product.diagram.property.text.MultiLineText;
+import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;import com.horstmann.violet.product.diagram.property.text.MultiLineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 import com.horstmann.violet.product.diagram.property.text.decorator.*;
 
@@ -32,7 +31,7 @@ import java.util.regex.Pattern;
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNode, IRevertableProperties, IRenameableNode
+public class ClassNode extends ColorableNode implements INamedNode, IRevertableProperties
 {
 
     public static boolean classNameChange = false;
@@ -107,6 +106,8 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
         TextContent nameContent = new TextContent(name);
         nameContent.setMinHeight(MIN_NAME_HEIGHT);
         nameContent.setMinWidth(MIN_WIDTH);
+        TextContent attributesContent = new TextContent(attributes);
+        TextContent methodsContent = new TextContent(methods);
         TextContent commentContent = new TextContent(comment);
 
         VerticalLayout verticalGroupContent = new VerticalLayout();
@@ -221,9 +222,9 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
             toBigLetter(getName());
         }
         else
-        {
+            {
             name.setText(newValue);
-        }
+            }
     }
 
     /**
@@ -236,6 +237,16 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
         String newName = newValue.toString().substring(0, 1).toUpperCase()
                          + getName().toString().substring(1);
         name.setText(newName);
+    }
+
+    /**
+     * Gets the name property value.
+     *
+     * @return the class name
+     */
+    public LineText getName()
+    {
+        return name;
     }
 
     /**
@@ -345,6 +356,7 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
     private SingleLineText stereotype;
     private SingleLineText name;
     private MultiLineText attributes;
+    private MultiLineText methods;
     private MultiLineText comment;
 
     private transient Separator separator;
@@ -404,10 +416,10 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
             if (!containsLettersOnly(text)) {
 
             }
-            else if (textCharTable[0]==u/00AB || text.equals("")) {
+            else if (textCharTable[0]=="\u00AB" || text.equals("")) {
                 controlText = new OneLineText(text);
             } else {
-                String withBrackets = new String(u/00AB+ text + u/00BB);
+                String withBrackets = new String("\u00AB"+ text + "\u00BB");
                 controlText = new OneLineText(withBrackets);
             }
 
