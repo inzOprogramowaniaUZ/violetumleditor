@@ -8,13 +8,13 @@ import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.workspace.editorpart.IEditorPart;
 import com.horstmann.violet.workspace.editorpart.IEditorPartBehaviorManager;
 import com.horstmann.violet.workspace.editorpart.IEditorPartSelectionHandler;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.List;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
 {
@@ -179,6 +179,15 @@ public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
         });
         aPopupMenu.add(delete);
         
+        show.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent event)
+            {
+                ShowMenuOnRightClickBehavior.this.editorPart.switchVisableOnSelectedNodes();
+            }
+        });
+        aPopupMenu.add(show);
+        
         selectAll.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent event)
@@ -225,6 +234,9 @@ public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
 
     @ResourceBundleBean(key = "edit.delete")
     private JMenuItem delete;
+    
+    @ResourceBundleBean(key = "edit.show")
+    private JMenuItem show;
 
     @ResourceBundleBean(key = "edit.select_all")
     private JMenuItem selectAll;
