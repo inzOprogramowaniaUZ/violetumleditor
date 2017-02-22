@@ -10,19 +10,22 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>violet-framework</module>
-		<module>violetplugin-activitydiagram</module>
-		<module>violetplugin-classdiagram</module>
-		<module>violetplugin-communicationdiagram</module>
-		<module>violetplugin-objectdiagram</module>
-		<module>violetplugin-sequencediagram</module>
-		<module>violetplugin-statediagram</module>
-		<module>violetplugin-usecasediagram</module>
-		<module>violetproduct-swing</module>
-		<module>violetproduct-deb</module>
-		<!--module>violetproduct-jnlp</module -->
-		<!--  <module>violetproduct-exe</module> -->
-		<!-- module>violetproduct-rpm</module-->
-		<!--  <module>violetproduct-web</module> -->
+    	<module>violetplugin-activitydiagram</module>
+    	<module>violetplugin-classdiagram</module>
+    	<module>violetplugin-communicationdiagram</module>
+    	<module>violetplugin-objectdiagram</module>
+    	<module>violetplugin-sequencediagram</module>
+    	<module>violetplugin-statediagram</module>
+    	<module>violetplugin-componentdiagram</module>
+    	<module>violetplugin-usecasediagram</module>
+    	<module>violetproduct-swing</module>
+    	<module>violetproduct-deb</module>
+
+    	<!-- Modules 'exe' and 'web' are commented out because they're causing problems during project build-->
+    	<!--<module>violetproduct-exe</module>-->
+    	<!--<module>violetproduct-web</module>-->
+    	<!--<module>violetproduct-jnlp</module>-->
+    	<!--<module>violetproduct-rpm</module>-->
 	</modules>
 	<properties>
 		<applicationVersion>2.5.3</applicationVersion>

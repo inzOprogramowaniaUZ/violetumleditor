@@ -99,79 +99,55 @@ public class EditorToolsPanelUI extends PanelUI
 
             GridBagConstraints c1 = new GridBagConstraints();
             c1.anchor = GridBagConstraints.CENTER;
-            c1.insets = new Insets(topBorderBetweenButtons,
-            					   bottomBorderBetweenButtons,
-            					   leftBorderBetweenButtons, 
-            					   rightBorderBetweenButtons);
+            c1.insets = new Insets(topBorderBetweenButtons, bottomBorderBetweenButtons, leftBorderBetweenButtons, rightBorderBetweenButtons);
             c1.gridx = 0;
             c1.gridy = 0;
             layout.setConstraints(this.editorToolsPanel.getUndoButton(), c1);
 
             GridBagConstraints c2 = new GridBagConstraints();
             c2.anchor = GridBagConstraints.CENTER;
-            c2.insets = new Insets(topBorderBetweenButtons,
-            					   bottomBorderBetweenButtons,
-            					   leftBorderBetweenButtons, 
-            					   rightBorderBetweenButtons);
+            c2.insets = new Insets(topBorderBetweenButtons, bottomBorderBetweenButtons, leftBorderBetweenButtons, rightBorderBetweenButtons);
             c2.gridx = 1;
             c2.gridy = 0;
             layout.setConstraints(this.editorToolsPanel.getZoomInButton(), c2);
 
             GridBagConstraints c3 = new GridBagConstraints();
             c3.anchor = GridBagConstraints.CENTER;
-            c3.insets = new Insets(topBorderBetweenButtons,
-            					   bottomBorderBetweenButtons,
-            					   leftBorderBetweenButtons, 
-            					   rightBorderBetweenButtons);
+            c3.insets = new Insets(topBorderBetweenButtons, bottomBorderBetweenButtons, leftBorderBetweenButtons, rightBorderBetweenButtons);
             c3.gridx = 2;
             c3.gridy = 0;
             layout.setConstraints(this.editorToolsPanel.getZoomOutButton(), c3);
 
             GridBagConstraints c4 = new GridBagConstraints();
             c4.anchor = GridBagConstraints.CENTER;
-            c4.insets = new Insets(topBorderBetweenButtons, 
-            		   			   bottomBorderBetweenButtons,
-            		   			   leftBorderBetweenButtons,
-            		   			   rightBorderBetweenButtons);
+            c4.insets = new Insets(topBorderBetweenButtons, bottomBorderBetweenButtons, leftBorderBetweenButtons, rightBorderBetweenButtons);
             c4.gridx = 3;
             c4.gridy = 0;
             layout.setConstraints(this.editorToolsPanel.getDeleteButton(), c4);
 
             GridBagConstraints c5 = new GridBagConstraints();
             c5.anchor = GridBagConstraints.CENTER;
-            c5.insets = new Insets(topBorderBetweenButtons,
-            					   bottomBorderBetweenButtons,
-            					   leftBorderBetweenButtons,
-            					   rightBorderBetweenButtons);
+            c5.insets = new Insets(topBorderBetweenButtons, bottomBorderBetweenButtons, leftBorderBetweenButtons, rightBorderBetweenButtons);
             c5.gridx = 4;
             c5.gridy = 0;
             layout.setConstraints(this.editorToolsPanel.getRedoButton(), c5);
 
             GridBagConstraints c6 = new GridBagConstraints();
             c6.anchor = GridBagConstraints.CENTER;
-            c6.insets = new Insets(topBorderBetweenButtons,
-            					   bottomBorderBetweenButtons,
-            					   leftBorderBetweenButtons,
-            					   rightBorderBetweenButtons);
+            c6.insets = new Insets(topBorderBetweenButtons, bottomBorderBetweenButtons, leftBorderBetweenButtons, rightBorderBetweenButtons);
             c6.gridx = 1;
             c6.gridy = 1;
             layout.setConstraints(this.editorToolsPanel.getCutButton(), c6);
 
             GridBagConstraints c7 = new GridBagConstraints();
-            c7.insets = new Insets(topBorderBetweenButtons,
-            					   bottomBorderBetweenButtons,
-            					   leftBorderBetweenButtons,
-            					   rightBorderBetweenButtons);
+            c7.insets = new Insets(topBorderBetweenButtons, bottomBorderBetweenButtons, leftBorderBetweenButtons, rightBorderBetweenButtons);
             c7.weightx = 1;
             c7.gridx = 2;
             c7.gridy = 1;
             layout.setConstraints(this.editorToolsPanel.getCopyButton(), c7);
 
             GridBagConstraints c8 = new GridBagConstraints();
-            c8.insets = new Insets(topBorderBetweenButtons,
-            					   bottomBorderBetweenButtons,
-            					   leftBorderBetweenButtons,
-            					   rightBorderBetweenButtons);
+            c8.insets = new Insets(topBorderBetweenButtons, bottomBorderBetweenButtons, leftBorderBetweenButtons, rightBorderBetweenButtons);
             c8.weightx = 1;
             c8.gridx = 3;
             c8.gridy = 1;
