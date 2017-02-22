@@ -106,8 +106,6 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         TextContent nameContent = new TextContent(name);
         nameContent.setMinHeight(MIN_NAME_HEIGHT);
         nameContent.setMinWidth(MIN_WIDTH);
-        TextContent attributesContent = new TextContent(attributes);
-        TextContent methodsContent = new TextContent(methods);
         TextContent commentContent = new TextContent(comment);
 
         VerticalLayout verticalGroupContent = new VerticalLayout();
@@ -186,7 +184,6 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
 		createContentStructure();
 	}
 
-    @Override
     public void replaceNodeOccurrences(String oldValue, String newValue) {
         super.replaceNodeOccurrences(oldValue, newValue);
         replaceNodeOccurrencesInAttributes(oldValue, newValue);
@@ -412,11 +409,11 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
         public OneLineText toLineString(String text) {
             OneLineText controlText = null;
             char[] textCharTable = text.toCharArray();
+            char bracket = '\u00AB';
 
             if (!containsLettersOnly(text)) {
 
-            }
-            else if (textCharTable[0]=="\u00AB" || text.equals("")) {
+            } else if (textCharTable[0]== bracket || text.equals("")) {
                 controlText = new OneLineText(text);
             } else {
                 String withBrackets = new String("\u00AB"+ text + "\u00BB");
