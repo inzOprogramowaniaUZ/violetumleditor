@@ -184,10 +184,6 @@ public class ClassNode extends ColorableNode implements INamedNode, IRevertableP
 		createContentStructure();
 	}
 
-    public void replaceNodeOccurrences(String oldValue, String newValue) {
-        super.replaceNodeOccurrences(oldValue, newValue);
-        replaceNodeOccurrencesInAttributes(oldValue, newValue);
-    }
 
     /**
      * Sets the stereotype property value.
