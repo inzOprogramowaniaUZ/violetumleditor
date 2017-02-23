@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNode, IRevertableProperties, IRenameableNode, ISwitchableNode, IVisibleNode
+public class ClassNode extends ColorableNode implements INamedNode, IRevertableProperties, IRenameableNode, ISwitchableNode, IVisibleNode
 {
 
     public static boolean classNameChange = false;
@@ -65,7 +65,7 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
     
     /**
      * Construct an class node from interface node
-     * @param the interface node
+     * @param node the interface node
      * @throws CloneNotSupportedException 
      */
     public ClassNode(InterfaceNode node) throws CloneNotSupportedException
@@ -499,4 +499,9 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
             return lineString;
         }
     };
+
+    @Override
+    public void replaceNodeOccurrences(String oldValue, String newValue) {
+       //dont know why somebody, who implemented this interface didn't add this single method, but without it nothing works
+    }
 }
