@@ -16,10 +16,9 @@ import com.horstmann.violet.product.diagram.abstracts.node.IRenameableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.ISwitchableNode;
 import com.horstmann.violet.product.diagram.abstracts.node.IVisibleNode;
 import com.horstmann.violet.product.diagram.classes.ClassDiagramConstant;
-import com.horstmann.violet.product.diagram.common.node.ColorableNodeWithMethodsInfo;
+import com.horstmann.violet.product.diagram.common.node.ColorableNode;
 import com.horstmann.violet.product.diagram.property.text.LineText;
-import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;
-import com.horstmann.violet.product.diagram.property.text.MultiLineText;
+import com.horstmann.violet.product.diagram.abstracts.node.INamedNode;import com.horstmann.violet.product.diagram.property.text.MultiLineText;
 import com.horstmann.violet.product.diagram.property.text.SingleLineText;
 import com.horstmann.violet.product.diagram.property.text.decorator.*;
 
@@ -34,7 +33,7 @@ import java.util.regex.Pattern;
 /**
  * A class node in a class diagram.
  */
-public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNode, IRevertableProperties, IRenameableNode, ISwitchableNode, IVisibleNode
+public class ClassNode extends ColorableNode implements INamedNode, IRevertableProperties, IRenameableNode, ISwitchableNode, IVisibleNode
 {
 
     public static boolean classNameChange = false;
@@ -45,6 +44,7 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
     {
         super();
         name = new SingleLineText(NAME_CONVERTER);
+        stereotype = new SingleLineText(STEREOTYPE_CONVERTER);
         name.setAlignment(LineText.CENTER);
         attributes = new MultiLineText(PROPERTY_CONVERTER);
         methods = new MultiLineText(PROPERTY_CONVERTER);
@@ -55,6 +55,7 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
     protected ClassNode(ClassNode node) throws CloneNotSupportedException
     {
         super(node);
+        stereotype = node.stereotype.clone();
         name = node.name.clone();
         attributes = node.attributes.clone();
         methods = node.methods.clone();
@@ -64,7 +65,7 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
     
     /**
      * Construct an class node from interface node
-     * @param the interface node
+     * @param node the interface node
      * @throws CloneNotSupportedException 
      */
     public ClassNode(InterfaceNode node) throws CloneNotSupportedException
@@ -82,6 +83,9 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
     {
         super.beforeReconstruction();
 
+        if (null == stereotype) {
+            stereotype = new SingleLineText();
+        }
         if(null == name)
         {
             name = new SingleLineText();
@@ -98,6 +102,7 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
         {
             comment = new MultiLineText();
         }
+        stereotype.reconstruction(STEREOTYPE_CONVERTER);
         name.reconstruction(NAME_CONVERTER);
         attributes.reconstruction(PROPERTY_CONVERTER);
         methods.reconstruction(PROPERTY_CONVERTER);
@@ -114,10 +119,12 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
     @Override
     protected void createContentStructure()
     {
+        TextContent stereotypeContent = new TextContent(stereotype);
         TextContent nameContent = new TextContent(name);
         nameContent.setMinHeight(MIN_NAME_HEIGHT);
         nameContent.setMinWidth(MIN_WIDTH);
         VerticalLayout verticalGroupContent = new VerticalLayout();
+        verticalGroupContent.add(stereotypeContent);
         verticalGroupContent.add(nameContent);
 		if (VISIBLE_METHODS_AND_ATRIBUTES == true) {
 	        TextContent commentContent = new TextContent(comment);
@@ -158,6 +165,7 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
     @Override
     public void setTextColor(Color textColor)
     {
+        stereotype.setTextColor(textColor);
         name.setTextColor(textColor);
         attributes.setTextColor(textColor);
         methods.setTextColor(textColor);
@@ -210,10 +218,23 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
 		createContentStructure();
 	}
 
-    @Override
-    public void replaceNodeOccurrences(String oldValue, String newValue) {
-        super.replaceNodeOccurrences(oldValue, newValue);
-        replaceNodeOccurrencesInAttributes(oldValue, newValue);
+
+    /**
+     * Sets the stereotype property value.
+     *
+     * @param newValue the class name
+     */
+    public void setStereotype(LineText newValue) {
+        stereotype.setText(newValue);
+    }
+
+    /**
+     * Gets the stereotype property value.
+     *
+     * @return the class name
+     */
+    public LineText getStereotype() {
+        return stereotype;
     }
 
     /**
@@ -243,6 +264,16 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
         String newName = newValue.toString().substring(0, 1).toUpperCase()
                          + getName().toString().substring(1);
         name.setText(newName);
+    }
+
+    /**
+     * Gets the name property value.
+     *
+     * @return the class name
+     */
+    public LineText getName()
+    {
+        return name;
     }
 
     /**
@@ -349,7 +380,10 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
         return comment;
     }
 
+    private SingleLineText stereotype;
+    private SingleLineText name;
     private MultiLineText attributes;
+    private MultiLineText methods;
     private MultiLineText comment;
 
     private transient Separator separator;
@@ -385,11 +419,35 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
             HIDE
     );
 
-    private static final LineText.Converter NAME_CONVERTER = new LineText.Converter()
-    {
+    /**
+     * converts the stereotype from plain text to one that may contain decorators
+     * @param text class stereotype
+     */
+    private static final LineText.Converter STEREOTYPE_CONVERTER = new LineText.Converter() {
         @Override
-        public OneLineText toLineString(String text)
-        {
+        public OneLineText toLineString(String text) {
+            OneLineText controlText = null;
+
+            if (text.contains("\u00AB") || text.equals("")) {
+                controlText = new OneLineText(text);
+            } else {
+                String withBrackets = new String("\u00AB"+ text + "\u00BB");
+                controlText = new OneLineText(withBrackets);
+            }
+
+            OneLineText lineString=new SmallSizeDecorator(controlText);
+
+            return lineString;
+        }
+    };
+
+    /**
+     * converts class name from plain text to one that may contain decorators
+     * @param text class name
+     */
+    private static final LineText.Converter NAME_CONVERTER = new LineText.Converter() {
+        @Override
+        public OneLineText toLineString(String text) {
             OneLineText controlText = new OneLineText(text);
             OneLineText lineString = new LargeSizeDecorator(controlText);
 
@@ -397,7 +455,7 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
             {
                 lineString = new RemoveSentenceDecorator(lineString, INTERFACE);
             }
-            
+
             if(controlText.contains(ABSTRACT))
             {
                 lineString = new ItalicsDecorator(lineString);
@@ -441,4 +499,9 @@ public class ClassNode extends ColorableNodeWithMethodsInfo implements INamedNod
             return lineString;
         }
     };
+
+    @Override
+    public void replaceNodeOccurrences(String oldValue, String newValue) {
+       //dont know why somebody, who implemented this interface didn't add this single method, but without it nothing works
+    }
 }

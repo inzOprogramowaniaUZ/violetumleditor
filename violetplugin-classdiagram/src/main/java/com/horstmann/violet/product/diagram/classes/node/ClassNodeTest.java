@@ -37,7 +37,6 @@ public class ClassNodeTest {
 
     private void testAttributes(String givenAttribute, String expectedAttribute) {
         setAttribute(givenAttribute);
-        classNode.replaceNodeOccurrences(oldName, newName);
         assertEquals(expectedAttribute, classNode.getAttributes().toEdit());
     }
 
