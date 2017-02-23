@@ -29,6 +29,7 @@ import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
 import com.horstmann.violet.product.diagram.abstracts.node.AbstractNode;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.product.diagram.abstracts.node.ISwitchableNode;
+import com.horstmann.violet.product.diagram.abstracts.node.IVisibleNode;
 import com.horstmann.violet.workspace.editorpart.behavior.IEditorPartBehavior;
 import com.horstmann.violet.workspace.editorpart.enums.Direction;
 import javax.swing.*;
@@ -46,7 +47,7 @@ import javax.swing.JPanel;
 
 // TODO: Auto-generated Javadoc
 /**
- * Graph editor.
+ * Graph editor
  */
 public class EditorPart extends JPanel implements IEditorPart
 {
@@ -132,6 +133,8 @@ public class EditorPart extends JPanel implements IEditorPart
      */
     public EditorPart(final IGraph aGraph)
     {
+        setFocusable(true);
+        requestFocusInWindow();
         this.graph = aGraph;
         this.zoom = 1;
         this.grid = new PlainGrid(this);
@@ -296,11 +299,13 @@ public class EditorPart extends JPanel implements IEditorPart
 	public void switchVisableOnSelectedNodes() {
 		List<INode> selectedNodes = selectionHandler.getSelectedNodes();
 		for (INode iNode : selectedNodes) {
-			if (iNode instanceof AbstractNode) {
-				AbstractNode abstractNode = (AbstractNode) iNode;
-				abstractNode.switchVisible();
+			if (iNode instanceof IVisibleNode) {
+				IVisibleNode visibleNode = (IVisibleNode) iNode;
+				visibleNode.switchVisible();
 			}
 		}
+		this.getSwingComponent().invalidate();
+		this.updateUI();
 	}
 	
     /* (non-Javadoc)
@@ -330,9 +335,6 @@ public class EditorPart extends JPanel implements IEditorPart
         selectionHandler.addSelectedElement(node);
     }
 
-    /* (non-Javadoc)
-     * @see com.horstmann.violet.workspace.editorpart.IEditorPart#zoomIn()
-     */
     @Override
     public void zoomIn()
     {
@@ -441,10 +443,8 @@ public class EditorPart extends JPanel implements IEditorPart
         repaint();
     }
 
-    /* (non-Javadoc)
-     * @see com.horstmann.violet.workspace.editorpart.IEditorPart#getSwingComponent()
-     */
     @Override
+
     public JComponent getSwingComponent()
     {
         return this;
