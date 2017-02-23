@@ -20,7 +20,39 @@ import com.horstmann.violet.workspace.editorpart.IEditorPartSelectionHandler;
 
 public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
 {
+    private JPopupMenu popupMenu;
+    
+    private IGraph graph;
+    
+    private IEditorPartSelectionHandler selectionHandler;
+    
+    @ResourceBundleBean(key = "edit.undo")
+    private JMenuItem undo;
+    
+    @ResourceBundleBean(key = "edit.redo")
+    private JMenuItem redo;
 
+    @ResourceBundleBean(key = "edit.properties")
+    private JMenuItem properties;
+
+    @ResourceBundleBean(key = "edit.cut")
+    private JMenuItem cut;
+
+    @ResourceBundleBean(key = "edit.copy")
+    private JMenuItem copy;
+
+    @ResourceBundleBean(key = "edit.paste")
+    private JMenuItem paste;
+
+    @ResourceBundleBean(key = "edit.delete")
+    private JMenuItem delete;
+
+    @ResourceBundleBean(key = "edit.select_all")
+    private JMenuItem selectAll;
+    
+    private IEditorPart editorPart;
+
+    
     public ShowMenuOnRightClickBehavior(IEditorPart editorPart)
     {
         ResourceBundleInjector.getInjector().inject(this);
@@ -30,10 +62,10 @@ public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
     }
     
     @Override
-    public void onMouseClicked(MouseEvent event)
+    public void onMousePressed(MouseEvent event)
     {
-        boolean isButton3Clicked = (event.getButton() == MouseEvent.BUTTON3);
-        if (event.getClickCount() == 1 && isButton3Clicked)
+        boolean isButton3Pressed = (event.getButton() == MouseEvent.BUTTON3);
+        if (event.getClickCount() == 1 && isButton3Pressed)
         {
             double zoom = editorPart.getZoomFactor();
             final Point2D mousePoint = new Point2D.Double(event.getX() / zoom, event.getY() / zoom);
@@ -183,38 +215,4 @@ public class ShowMenuOnRightClickBehavior extends AbstractEditorPartBehavior
         
         return aPopupMenu;
     }
-    
-    private JPopupMenu popupMenu; 
-    
-    private IGraph graph;
-
-    private IEditorPartSelectionHandler selectionHandler;
-    
-    @ResourceBundleBean(key = "edit.undo")
-    private JMenuItem undo;
-
-    @ResourceBundleBean(key = "edit.redo")
-    private JMenuItem redo;
-
-    @ResourceBundleBean(key = "edit.properties")
-    private JMenuItem properties;
-
-    @ResourceBundleBean(key = "edit.cut")
-    private JMenuItem cut;
-
-    @ResourceBundleBean(key = "edit.copy")
-    private JMenuItem copy;
-
-    @ResourceBundleBean(key = "edit.paste")
-    private JMenuItem paste;
-
-    @ResourceBundleBean(key = "edit.delete")
-    private JMenuItem delete;
-
-    @ResourceBundleBean(key = "edit.select_all")
-    private JMenuItem selectAll;
-    
-    private IEditorPart editorPart;
-
-  
 }
