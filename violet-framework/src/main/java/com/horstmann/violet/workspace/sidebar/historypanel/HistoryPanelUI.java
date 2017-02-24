@@ -15,8 +15,8 @@ public class HistoryPanelUI extends PanelUI {
     }
 
     @Override
-    public void installUI(JComponent c) {
-        c.removeAll();
+    public void installUI(JComponent component) {
+        component.removeAll();
         this.historyPanel.setBackground(ThemeManager.getInstance().getTheme().getSidebarElementBackgroundColor());
         this.historyPanel.add(getHistoryPanel());
     }

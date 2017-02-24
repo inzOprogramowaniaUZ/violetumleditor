@@ -1,34 +1,18 @@
 package com.horstmann.violet.workspace.sidebar.historypanel;
 
 import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
-import com.horstmann.violet.workspace.sidebar.colortools.IColorChoiceBar;
-import com.horstmann.violet.workspace.sidebar.editortools.EditorToolsPanelUI;
-
 import java.awt.*;
 import java.awt.event.*;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
 import com.horstmann.violet.framework.injection.resources.annotation.ResourceBundleBean;
 import com.horstmann.violet.workspace.IWorkspace;
 import com.horstmann.violet.workspace.editorpart.IEditorPart;
 import com.horstmann.violet.workspace.editorpart.IEditorPartBehaviorManager;
-import com.horstmann.violet.workspace.editorpart.behavior.CutCopyPasteBehavior;
 import com.horstmann.violet.workspace.editorpart.behavior.UndoRedoCompoundBehavior;
 import com.horstmann.violet.workspace.sidebar.ISideBarElement;
 import com.horstmann.violet.workspace.sidebar.SideBar;
 
-/**
- * Created by Marek on 06.12.2016.
- */
 @ResourceBundleBean(resourceReference = SideBar.class)
 public class HistoryPanel extends JPanel implements ISideBarElement {
 
@@ -115,6 +99,6 @@ public class HistoryPanel extends JPanel implements ISideBarElement {
     private String title;
 
     @ResourceBundleBean(key = "paste")
-    private JButton bPaste;
+    private JButton pasteButton;
 
 }
