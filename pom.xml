@@ -3,6 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/maven-v4_0_0.xsd">
+
 <modelVersion>4.0.0</modelVersion>
   <groupId>com.horstmann.violet</groupId>
   <artifactId>parent</artifactId>
@@ -22,8 +23,8 @@
     <module>violetproduct-swing</module>
     <module>violetproduct-deb</module>
 
-    <!-- Modules 'exe' and 'web' are commented out because they're causing problems during project build-->
-    <!--<module>violetproduct-exe</module>-->
+    <!-- Module 'web' is commented out because it's causing problems during project build-->
+    <module>violetproduct-exe</module>
     <!--<module>violetproduct-web</module>-->
     <!--<module>violetproduct-jnlp</module>-->
     <!--<module>violetproduct-rpm</module>-->
